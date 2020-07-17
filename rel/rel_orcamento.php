@@ -4,7 +4,7 @@ $id = $_GET['id'];
 
 include('../conexao.php');
 
-$query = "select o.id, o.cliente, o.tecnico, o.produto, o.serie, o.problema, o.laudo, o.valor_servico, o.pecas, o.valor_pecas, o.total, o.valor_total, o.status, o.data_abertura, o.data_geracao, c.nome as cli_nome, c.email, c.telefone, c.endereco, f.nome as func_nome from orcamentos as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where o.id = '$id'";
+$query = "select o.id, o.cliente, o.tecnico, o.produto, o.serie, o.problema, o.laudo, o.valor_servico, o.pecas, o.valor_pecas, o.total, o.valor_total, o.status, o.data_abertura, o.data_geracao, c.nome as cli_nome, c.email, c.telefone, c.endereco, f.nome as func_nome from orcamento as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where o.id = '$id'";
 $result = mysqli_query($conexao, $query);
 
  while($res_1 = mysqli_fetch_array($result)){
@@ -35,7 +35,7 @@ $data2 = implode('/', array_reverse(explode('-', $res_1['data_geracao'])));
 
 .cabecalho {    
     background-color: #ebebeb;
-    padding-top:15px;
+    padding:15px 15px 15px 15px;
     margin-bottom:15px;
 }
 
@@ -63,8 +63,6 @@ $data2 = implode('/', array_reverse(explode('-', $res_1['data_geracao'])));
 	margin:1px;
 }
 
-
-
 </style>
 
 
@@ -72,7 +70,7 @@ $data2 = implode('/', array_reverse(explode('-', $res_1['data_geracao'])));
 	
 		<div class="row">
 			<div class="col-sm-5">	
-			  <img src="../img/logo2.png" width="250px">
+			  <img src="../img/logo.png" width="250px">
 			</div>
 			<div class="col-sm-7">	
 			 <h3 class="titulo"><b>SysTec Freitas - Assistência Técnica</b></h3>
@@ -245,7 +243,7 @@ $data2 = implode('/', array_reverse(explode('-', $res_1['data_geracao'])));
 
 
 <div class="footer">
- <p style="font-size:12px" align="center">Desenvolvido por Hugo Vasconcelos - Q-Cursos Networks</p> 
+ <p style="font-size:12px" align="center">Robson</p> 
 </div>
 
 

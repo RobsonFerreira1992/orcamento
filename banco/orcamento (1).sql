@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: 10-Jul-2020 às 17:34
+-- Generation Time: 17-Jul-2020 às 17:22
 -- Versão do servidor: 10.1.44-MariaDB-0ubuntu0.18.04.1
 -- PHP Version: 7.2.24-0ubuntu0.18.04.6
 
@@ -64,7 +64,10 @@ CREATE TABLE `clientes` (
 INSERT INTO `clientes` (`id`, `nome`, `telefone`, `endereco`, `email`, `cpf`, `data`) VALUES
 (2, 'Adriano Ferreira Miranda', '(11) 11111-1111', 'rua 2', 'fabio@hotmail.com', '11111111111', '0000-00-00'),
 (3, 'Fabio Ferreira Miranda', '(11) 22222-2222', 'rua 2', 'teste@hotmail.com', '22222222222', '0000-00-00'),
-(4, 'Débora Sanches ', '(11) 98723-3444', 'rua Arari', 'debora@hotmail.com', '99999999999', '0000-00-00');
+(4, 'Débora Sanches ', '(11) 98723-3444', 'rua Arari', 'debora@hotmail.com', '99999999999', '0000-00-00'),
+(5, 'Dolores', '(22) 22222-2222', 'rua 20', 'dolores@hotmail.com', '77777777777', '0000-00-00'),
+(9, 'mendel', '(11) 11111-1111', 'rua 10', 'mendel@hotmail.com', '444', '2020-07-16'),
+(10, 'Vinicius', '(11) 11111-1111', 'rua 5', 'vinicius@hotmail.com', '888', '2020-07-16');
 
 -- --------------------------------------------------------
 
@@ -124,8 +127,13 @@ CREATE TABLE `orcamento` (
 --
 
 INSERT INTO `orcamento` (`id`, `cliente`, `tecnico`, `produto`, `serie`, `problema`, `laudo`, `obs`, `valor_servico`, `pecas`, `valor_pecas`, `total`, `desconto`, `valor_total`, `pgto`, `data_abertura`, `data_geracao`, `data_aprovacao`, `status`) VALUES
-(3, '22222222222', '4', 'Galaxy s9', '012', 'Tela quebrada', NULL, 'caiu no chão', NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2020-07-09', NULL, NULL, 'Aberto'),
-(4, '99999999999', '4', 'Iphone 8', '014', 'celular desliga sozinho', NULL, 'nenhuma', NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2020-07-09', NULL, NULL, 'Aberto');
+(3, '22222222222', '4', 'Galaxy s9', '012', 'Tela quebrada', 'troca de tela', 'caiu no chão', '50.00', 'tela nova ', '100.00', '150.00', '0.00', '150.00', NULL, '2020-07-09', '0000-00-00', NULL, 'Aguardando'),
+(4, '99999999999', '4', 'Iphone 8', '014', 'celular desliga sozinho', NULL, 'nenhuma', NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2020-07-09', NULL, NULL, 'Aberto'),
+(5, '77777777777', '4', 'samsung a50', '050', 'tela', NULL, 'troca', NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2020-07-13', NULL, NULL, 'Aberto'),
+(6, '99999999999', '4', 'iphone 8', '025', 'carregador', 'carregador com defeito', 'nenhuma', '200.00', 'novo carregador', '400.00', '600.00', '0.00', '600.00', NULL, '2020-07-13', '0000-00-00', NULL, 'Aguardando'),
+(7, '77777777777', '4', 'Moto g8', '050', 'carregador', NULL, 'nenhuma', NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2020-07-13', NULL, NULL, 'Aberto'),
+(8, '444', '4', 'tv', '045', 'carregador', 'teste ', 'tv não liga', '100.00', 'nova tela', '500.00', '600.00', '0.00', '600.00', NULL, '2020-07-16', '0000-00-00', NULL, 'Aguardando'),
+(9, '888', '4', 'moto g8', '025', 'tela', 'teste', 'rtgrtr', '100.00', 'tela', '200.00', '300.00', '0.00', '300.00', NULL, '2020-07-16', '2020-07-16', NULL, 'Aguardando');
 
 -- --------------------------------------------------------
 
@@ -198,7 +206,7 @@ ALTER TABLE `cargos`
 -- AUTO_INCREMENT for table `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `funcionarios`
 --
@@ -208,7 +216,7 @@ ALTER TABLE `funcionarios`
 -- AUTO_INCREMENT for table `orcamento`
 --
 ALTER TABLE `orcamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `usuarios`
 --

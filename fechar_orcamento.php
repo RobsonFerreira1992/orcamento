@@ -226,12 +226,12 @@ if(isset($_POST['buttonEditar'])){
   $desconto = 0;
   $valor_total = $_POST['txtvalor'] + $_POST['txtvalorPecas'];
   $status = 'Aguardando';
-
+  $data = date('Y-m-d');
  
  
 
 
-$query_editar = "UPDATE orcamento set laudo = '$laudo', valor_servico = '$valor_servico', pecas = '$pecas', valor_pecas = '$valor_pecas', desconto = '$desconto', total = '$valor_total', valor_total='$valor_total', data_geracao= 'curDate()', `status` = '$status' where id = '$id' ";
+$query_editar = "UPDATE orcamento set laudo = '$laudo', valor_servico = '$valor_servico', pecas = '$pecas', valor_pecas = '$valor_pecas', desconto = '$desconto', total = '$valor_total', valor_total='$valor_total', data_geracao = '$data', `status` = '$status' where id = '$id' ";
 
 $result_editar = mysqli_query($conexao, $query_editar);
 

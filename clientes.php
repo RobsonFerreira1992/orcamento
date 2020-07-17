@@ -250,7 +250,7 @@ if(isset($_POST['button'])){
   $endereco = $_POST['txtendereco'];
   $email = $_POST['txtemail'];
   $cpf = $_POST['txtcpf'];
-  
+  $data = date('Y-m-d');
   
   $query_verificar = " SELECT * FROM `clientes` WHERE `cpf` = '$cpf'";
   
@@ -263,7 +263,7 @@ if(isset($_POST['button'])){
 
   }
 
-  $query = "INSERT INTO `clientes` (`nome`,`telefone`,`endereco`,`email`,`cpf`) VALUES ('$nome','$telefone','$endereco','$email','$cpf')";
+  $query = "INSERT INTO `clientes` (`nome`,`telefone`,`endereco`,`email`,`cpf`,data) VALUES ('$nome','$telefone','$endereco','$email','$cpf','$data')";
 
   $result= mysqli_query($conexao,$query);
 

@@ -1,6 +1,23 @@
 <?php
 include('conexao.php');
 session_start();
+
+
+
+$query = "SELECT * FROM orcamento where `status` ='Aguardando'";
+$result = mysqli_query($conexao, $query);
+
+ while($res_1 = mysqli_fetch_array($result)){
+    $data_geracao = $res_1['data_geracao'];
+    $data_cancelamento = date('d/m/y', strtotime("-7 days", strtotime(date('Y/m/d'))));
+
+    $query_editar = "UPDATE orcamento set `status` = 'Cancelado' where `data_geracao` = '$data_cancelamento' and `status` = 'Aguardando'";
+    $result_editar = mysqli_query($conexao,$query_editar);
+ }
+
+ 
+
+
 if(empty($_POST['usuario']) || empty($_POST['senha'])){
     header('location:index.php');
     exit();
