@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb5
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: 17-Jul-2020 às 17:22
--- Versão do servidor: 10.1.44-MariaDB-0ubuntu0.18.04.1
--- PHP Version: 7.2.24-0ubuntu0.18.04.6
+-- Host: 127.0.0.1
+-- Tempo de geração: 20-Jul-2020 às 03:51
+-- Versão do servidor: 10.4.8-MariaDB
+-- versão do PHP: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `orcamento`
+-- Banco de dados: `orcamento`
 --
 
 -- --------------------------------------------------------
@@ -65,9 +67,8 @@ INSERT INTO `clientes` (`id`, `nome`, `telefone`, `endereco`, `email`, `cpf`, `d
 (2, 'Adriano Ferreira Miranda', '(11) 11111-1111', 'rua 2', 'fabio@hotmail.com', '11111111111', '0000-00-00'),
 (3, 'Fabio Ferreira Miranda', '(11) 22222-2222', 'rua 2', 'teste@hotmail.com', '22222222222', '0000-00-00'),
 (4, 'Débora Sanches ', '(11) 98723-3444', 'rua Arari', 'debora@hotmail.com', '99999999999', '0000-00-00'),
-(5, 'Dolores', '(22) 22222-2222', 'rua 20', 'dolores@hotmail.com', '77777777777', '0000-00-00'),
-(9, 'mendel', '(11) 11111-1111', 'rua 10', 'mendel@hotmail.com', '444', '2020-07-16'),
-(10, 'Vinicius', '(11) 11111-1111', 'rua 5', 'vinicius@hotmail.com', '888', '2020-07-16');
+(5, 'Dolores', '(11) 99999-9999', 'rua 20', 'dolorescomdores@hotmail.com', '66666666666', '0000-00-00'),
+(6, 'Mendel', '(11) 11111-1111', 'rua 10', 'mendel@hotmail.com', '77777777777', '2020-07-18');
 
 -- --------------------------------------------------------
 
@@ -127,13 +128,42 @@ CREATE TABLE `orcamento` (
 --
 
 INSERT INTO `orcamento` (`id`, `cliente`, `tecnico`, `produto`, `serie`, `problema`, `laudo`, `obs`, `valor_servico`, `pecas`, `valor_pecas`, `total`, `desconto`, `valor_total`, `pgto`, `data_abertura`, `data_geracao`, `data_aprovacao`, `status`) VALUES
-(3, '22222222222', '4', 'Galaxy s9', '012', 'Tela quebrada', 'troca de tela', 'caiu no chão', '50.00', 'tela nova ', '100.00', '150.00', '0.00', '150.00', NULL, '2020-07-09', '0000-00-00', NULL, 'Aguardando'),
-(4, '99999999999', '4', 'Iphone 8', '014', 'celular desliga sozinho', NULL, 'nenhuma', NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2020-07-09', NULL, NULL, 'Aberto'),
-(5, '77777777777', '4', 'samsung a50', '050', 'tela', NULL, 'troca', NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2020-07-13', NULL, NULL, 'Aberto'),
-(6, '99999999999', '4', 'iphone 8', '025', 'carregador', 'carregador com defeito', 'nenhuma', '200.00', 'novo carregador', '400.00', '600.00', '0.00', '600.00', NULL, '2020-07-13', '0000-00-00', NULL, 'Aguardando'),
-(7, '77777777777', '4', 'Moto g8', '050', 'carregador', NULL, 'nenhuma', NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2020-07-13', NULL, NULL, 'Aberto'),
-(8, '444', '4', 'tv', '045', 'carregador', 'teste ', 'tv não liga', '100.00', 'nova tela', '500.00', '600.00', '0.00', '600.00', NULL, '2020-07-16', '0000-00-00', NULL, 'Aguardando'),
-(9, '888', '4', 'moto g8', '025', 'tela', 'teste', 'rtgrtr', '100.00', 'tela', '200.00', '300.00', '0.00', '300.00', NULL, '2020-07-16', '2020-07-16', NULL, 'Aguardando');
+(3, '22222222222', '4', 'Galaxy s9', '012', 'Tela quebrada', 'Troca de tela', 'caiu no chão', '100.00', 'botao', '50.00', '150.00', '20.00', '130.00', 'Dinheiro', '2020-07-09', '0000-00-00', '2020-07-18', 'Aprovado'),
+(4, '99999999999', '4', 'Iphone 8', '014', 'celular desliga sozinho', 'Troca de tela', 'nenhuma', '150.00', 'tela modelo iphone 8', '450.00', '600.00', '20.00', '580.00', 'Dinheiro', '2020-07-09', '0000-00-00', '0000-00-00', 'Aprovado'),
+(5, '11111111111', '4', 'Celular Motorola', '016', 'carregador', 'troca de entrada de carregador', 'mal contato', '50.00', 'nova entrada usb', '20.00', '70.00', '10.00', '60.00', 'Cartão', '2020-07-11', '0000-00-00', '2020-07-19', 'Aprovado'),
+(6, '66666666666', '4', 'iphone 10', '020', 'carregador', 'troca de entrada de carregador', 'mal contato', '100.00', 'nova entrada usb', '450.00', '550.00', '0.00', '550.00', 'Cartão', '2020-07-11', '0000-00-00', '2020-07-18', 'Aprovado'),
+(7, '66666666666', '4', 'Celular LG', '025', 'botao', NULL, 'botão de volume não esta mais funcionando ', NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2020-07-11', NULL, NULL, 'Aberto'),
+(8, '22222222222', '4', 'Celular LG', '023', 'carregador', 'troca de entrada de carregador', 'mal contato', '150.00', 'tela modelo iphone 8', '20.00', '170.00', '0.00', '170.00', NULL, '2020-07-11', '2020-07-19', NULL, 'Aguardando'),
+(9, '77777777777', '4', 'Celular LG', '050', 'tela', 'Troca de tela', 'tela não liga', '100.00', 'tela modelo lg', '450.00', '550.00', '10.00', '540.00', 'Dinheiro', '2020-07-18', '2020-07-18', '2020-07-18', 'Aprovado'),
+(10, '77777777777', '4', 'Celular LG', '020', 'botao', 'Troca de tela', 'mal contato', '100.00', 'nova entrada usb', '450.00', '550.00', '0.00', '550.00', NULL, '2020-07-19', '2020-07-19', NULL, 'Aguardando');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `os`
+--
+
+CREATE TABLE `os` (
+  `id` int(11) NOT NULL,
+  `id_orc` int(11) NOT NULL,
+  `cliente` varchar(50) NOT NULL,
+  `produto` varchar(50) NOT NULL,
+  `tecnico` varchar(50) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `data_abertura` date NOT NULL,
+  `data_fechamento` date DEFAULT NULL,
+  `garantia` varchar(15) DEFAULT NULL,
+  `status` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `os`
+--
+
+INSERT INTO `os` (`id`, `id_orc`, `cliente`, `produto`, `tecnico`, `total`, `data_abertura`, `data_fechamento`, `garantia`, `status`) VALUES
+(1, 9, '77777777777', 'Celular LG', '', '550.00', '2020-07-18', NULL, NULL, 'Aberto'),
+(2, 6, '66666666666', 'iphone 10', '', '550.00', '2020-07-18', NULL, NULL, 'Aberto'),
+(3, 5, '11111111111', 'Celular Motorola', '4', '70.00', '2020-07-19', NULL, NULL, 'Aberto');
 
 -- --------------------------------------------------------
 
@@ -160,68 +190,86 @@ INSERT INTO `usuarios` (`id`, `nome`, `usuario`, `senha`, `cargo`, `id_funcionar
 (6, 'Robson Ferreira Miranda', 'robson', '123', 'Funcionário', 4);
 
 --
--- Indexes for dumped tables
+-- Índices para tabelas despejadas
 --
 
 --
--- Indexes for table `cargos`
+-- Índices para tabela `cargos`
 --
 ALTER TABLE `cargos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `clientes`
+-- Índices para tabela `clientes`
 --
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `funcionarios`
+-- Índices para tabela `funcionarios`
 --
 ALTER TABLE `funcionarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `orcamento`
+-- Índices para tabela `orcamento`
 --
 ALTER TABLE `orcamento`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `usuarios`
+-- Índices para tabela `os`
+--
+ALTER TABLE `os`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
--- AUTO_INCREMENT for table `cargos`
+-- AUTO_INCREMENT de tabela `cargos`
 --
 ALTER TABLE `cargos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
--- AUTO_INCREMENT for table `clientes`
+-- AUTO_INCREMENT de tabela `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
--- AUTO_INCREMENT for table `funcionarios`
+-- AUTO_INCREMENT de tabela `funcionarios`
 --
 ALTER TABLE `funcionarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
--- AUTO_INCREMENT for table `orcamento`
+-- AUTO_INCREMENT de tabela `orcamento`
 --
 ALTER TABLE `orcamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
--- AUTO_INCREMENT for table `usuarios`
+-- AUTO_INCREMENT de tabela `os`
+--
+ALTER TABLE `os`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -58,24 +58,24 @@ include('conexao.php');
                                         $data = $_GET['txtpesquisar'] . '%';
                                        
               
-                                         $query = "select o.id, o.cliente, o.tecnico, o.produto, o.valor_total, o.status, o.data_abertura, c.nome as cli_nome, c.telefone, f.nome as func_nome from orcamento as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where data_abertura = '$data' and status = 'Aprovado' order by id asc";
+                                         $query = "select o.id, o.cliente, o.tecnico, o.produto, o.valor_total, o.status, o.data_abertura, c.nome as cli_nome, c.telefone, c.email, f.nome as func_nome from orcamento as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where data_abertura = '$data' and status = 'Aprovado' order by id asc";
               
                                        }else if (isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] == '' and $_GET['status'] != 'Aguardando' ){
                                         $data = $_GET['txtpesquisar'] . '%';
                                        
               
-                                         $query = "select o.id, o.cliente, o.tecnico, o.produto, o.valor_total, o.status, o.data_abertura, c.nome as cli_nome, c.telefone, f.nome as func_nome from orcamento as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where data_abertura = curDate() and status = 'Aprovado' order by id asc";
+                                         $query = "select o.id, o.cliente, o.tecnico, o.produto, o.valor_total, o.status, o.data_abertura, c.nome as cli_nome, c.telefone, c.email, f.nome as func_nome from orcamento as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where data_abertura = curDate() and status = 'Aprovado' order by id asc";
               
                                       
                                         }else if (isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != '' and $_GET['status'] == 'Aguardando' ){
                                         $data = $_GET['txtpesquisar'] . '%';
                                        
               
-                                         $query = "select o.id, o.cliente, o.tecnico, o.produto, o.valor_total, o.status, o.data_abertura, c.nome as cli_nome, c.telefone, f.nome as func_nome from orcamento as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where data_abertura = '$data' and status = 'Aguardando' order by id asc";
+                                         $query = "select o.id, o.cliente, o.tecnico, o.produto, o.valor_total, o.status, o.data_abertura, c.nome as cli_nome, c.telefone, c.email, f.nome as func_nome from orcamento as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where data_abertura = '$data' and status = 'Aguardando' order by id asc";
                                        
               
                                       }else{
-                                       $query = "select o.id, o.cliente, o.tecnico, o.produto, o.valor_total, o.status, o.data_abertura, c.nome as cli_nome, c.telefone, f.nome as func_nome from orcamento as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where status = 'Aguardando'  order by data_abertura asc"; 
+                                       $query = "select o.id, o.cliente, o.tecnico, o.produto, o.valor_total, o.status, o.data_abertura, c.nome as cli_nome, c.telefone, c.email, f.nome as func_nome from orcamento as o INNER JOIN clientes as c on o.cliente = c.cpf INNER JOIN funcionarios as f on o.tecnico = f.id where status = 'Aguardando'  order by data_abertura asc"; 
                                       }
               
 
@@ -124,6 +124,7 @@ include('conexao.php');
                                         $produto = $res_1["produto"];
                                         $data = $res_1["data_abertura"];
                                         $telefone = $res_1["telefone"];
+                                        $email = $res_1["email"];
                                         $id = $res_1["id"];
 
                                         $data2 = implode('/', array_reverse(explode('-', $data)));
@@ -138,7 +139,10 @@ include('conexao.php');
                                         <td><?php echo $data2; ?></td>
                                         <td><?php echo $telefone; ?></td>  
                                         <td>
-                                            <a class="btn btn-info" href="rel/rel_orcamento_class.php?id=<?php echo $id; ?>"><i class="fa fa-pencil-square-o"></i></a>
+                                            <a class="btn btn-info" href="rel/rel_orcamento_class.php?id=<?php echo $id; ?>&email=<?php echo $email; ?>"><i class="fa fa-pencil-square-o"></i></a>
+                                    
+                                            <a class="btn btn-success" href="rel_orcamento.php?func=edita&id=<?php echo $id; ?>"><i class="fa fa-check-circle"></i></a>
+
                                         </td>
                                         </tr>
 
@@ -159,4 +163,96 @@ include('conexao.php');
         </div>
     </body>
 </html>
+<?php
+if(@$_GET['func'] == 'edita'){  
+$id = $_GET['id'];
+$query = "select * from orcamento where id = '$id'";
+$result = mysqli_query($conexao, $query);
+
+ while($res_1 = mysqli_fetch_array($result)){
+    $total = $res_1['total'];
+    $cliente = $res_1['cliente'];
+    $tecnico = $res_1['tecnico'];
+    $produto = $res_1['produto'];
+  
+
+
+?>
+
+  <!-- Modal -->
+  <div id="modalEditar" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+         <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <h4 class="modal-title">Aprovar Orçamento</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="">
+               
+              <div class="form-group">
+                <label for="fornecedor">Forma de pagamento</label>
+                  
+                  <select class="form-control mr-2" id="category" name="pgto">
+                              
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Cartão">Cartão</option> 
+
+                      
+                  </select>
+              </div>
+              <div class="form-group">
+                <label for="quantidade">Desconto</label>
+                <input type="text" class="form-control mr-2" name="txtdesconto" value="" placeholder="Desconto" required>
+              </div>
+            
+               
+             
+            </div>
+                   
+            <div class="modal-footer">
+               <button type="submit" class="btn btn-success mb-3" name="buttonEditar">Aprovar</button>
+
+
+                <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>    
+ 
+
+ <script> $("#modalEditar").modal("show"); </script> 
+
+<!--Comando para editar os dados UPDATE -->
+<?php
+if(isset($_POST['buttonEditar'])){
+  
+  $pgto = $_POST['pgto'];
+  $desconto = $_POST['txtdesconto'];
+  $data = date('Y-m-d');
+  $valor_total = $total - $desconto;
+
+  $query_editar = "UPDATE orcamento set `desconto` = '$desconto', `valor_total` = '$valor_total', `pgto` = '$pgto', `data_aprovacao` = '$data', `status` = 'Aprovado' where id = '$id' ";
+
+$result_editar = mysqli_query($conexao, $query_editar);
+
+$query_os = "INSERT INTO os (`id_orc`, `cliente`, `produto`, `tecnico`, `total`, `data_abertura`, `status`) VALUES ('$id','$cliente','$produto','$tecnico','$total','$data', 'Aberto')"; 
+mysqli_query($conexao,$query_os);
+
+if($result_editar == ''){
+  echo "<script language='javascript'> window.alert('Ocorreu um erro ao Editar!'); </script>";
+}else{
+    echo "<script language='javascript'> window.alert('Editado com Sucesso!'); </script>";
+    echo "<script language='javascript'> window.location='rel_orcamento.php'; </script>";
+}
+
+}
+?>
+
+
+<?php }  } ?>
+
    

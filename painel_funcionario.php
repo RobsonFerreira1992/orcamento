@@ -74,9 +74,9 @@ include('verificar_login.php');
             </a>
           </li>
           <li>
-            <a href="./user.html">
+            <a href="os_abertas.php">
               <i class="nc-icon nc-single-02"></i>
-              <p>User Profile</p>
+              <p>Orçamentos Abertos</p>
             </a>
           </li>
           <li>

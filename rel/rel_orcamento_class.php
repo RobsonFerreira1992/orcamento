@@ -5,10 +5,11 @@
  use Dompdf\Dompdf;
 
  $id = $_GET['id'];
+ $email = $_GET['email'];
 
- $html = utf8_encode(file_get_contents('http://localhost/cursos-projetos/orcamentos/rel/rel_orcamento.php?id='.$id));
-
-
+ $html = utf8_encode(file_get_contents('http://localhost/orcamento/rel/rel_orcamento.php?id='.$id));
+ 
+ 
  // inicializador a classe do dompdf
  $pdf = new DOMPDF();
 
@@ -30,6 +31,13 @@
      'relatorioOrcamento.pdf',
      array('Attachment' => false)
  );
+
+ $to = 'rob_chop@hotmail.com';
+ $subject = 'Systec Orçamento';
+ $message = file_get_contents("http://localhost/orcamento/rel/rel_orcamento.php");
+ $dest = $email;
+ $headers = 'Content-type: text/html; charset=utf-8;';
+ mail($to,$subject,$message,$headers);
 ?>
 
 <?php 
