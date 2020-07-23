@@ -157,9 +157,9 @@ $tecnico = $_SESSION['nome_usuario'];
                              <td><?php echo $valor_total; ?></td>
                              <td><?php echo $data_abertura; ?></td>  
                              <td>
-                             <a class="btn btn-info" href="abrir_orcamentos.php?func=edita&id=<?php echo $id; ?>"><i class="fa fa-pencil-square-o"></i></a>
+                             <a class="btn btn-success" href="os_abertas.php?func=edita&id=<?php echo $id; ?>"><i class="fa fa-check-square"></i></a>
 
-                             <a class="btn btn-danger" href="abrir_orcamentos.php?func=deleta&id=<?php echo $id; ?>"><i class="fa fa-minus-square"></i></a>
+                             <a class="btn btn-danger" href="os_abertas.php?func=deleta&id=<?php echo $id; ?>"><i class="fa fa-minus-square"></i></a>
 
                              </td>
                             </tr>
@@ -179,80 +179,7 @@ $tecnico = $_SESSION['nome_usuario'];
                 </div>
               </div>
 
-</div>
-
-
-
-
- <!-- Modal -->
-      <div id="modalExemplo" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
-         <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              
-              <h4 class="modal-title">Novo Orçamento</h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-              <form method="POST" action="">
-               <div class="form-group">
-                <label for="fornecedor">CPF</label>
-                 <input type="text" class="form-control mr-2" name="txtcpf" id="txtcpf" placeholder="CPF" required>
-              </div>
-              <div class="form-group">
-                <label for="fornecedor">Técnico</label>
-                  
-                  <select class="form-control mr-2" id="category" name="funcionario">
-                  <?php
-                  
-                  $query = "SELECT * FROM funcionarios where cargo ='Funcionário' ORDER BY nome asc";
-                  $result = mysqli_query($conexao, $query);
-
-                  if(count($result)){
-                    while($res_1 = mysqli_fetch_array($result)){
-                        ?>                                             
-                    <option value="<?php echo $res_1['id']; ?>"><?php echo $res_1['nome']; ?></option> 
-                        <?php      
-                      }
-                  }
-                  ?>
-                  </select>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Produto</label>
-                <input type="text" class="form-control mr-2" name="txtproduto" placeholder="Produto" required>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Num Série</label>
-                <input type="text" class="form-control mr-2" name="txtserie" placeholder="serie" required>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Defeito</label>
-                <input type="text" class="form-control mr-2" name="txtdefeito" placeholder="Defeito" required>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Observações</label>
-                <input type="text" class="form-control mr-2" name="txtobs" placeholder="Obeservação" required>
-              </div>
-               
-             
-            </div>
-                   
-            <div class="modal-footer">
-               <button type="submit" class="btn btn-success mb-3" name="button">Salvar </button>
-
-
-                <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
-            </form>
-            </div>
-          </div>
-        </div>
-      </div>    
-
-
-
-
+  </div>
 </body>
 </html>
 
@@ -261,52 +188,15 @@ $tecnico = $_SESSION['nome_usuario'];
 
 <!--CADASTRAR -->
 
-<?php
-if(isset($_POST['button'])){
-  $nome = $_POST['txtcpf'];
-  $tecnico= $_POST['funcionario'];
-  $produto= $_POST['txtproduto'];
-  $serie = $_POST['txtserie'];
-  $defeito = $_POST['txtdefeito'];
-  $obs = $_POST['txtobs'];
-  $data = date('Y-m-d');
-
-
- //VERIFICAR SE O CPF JÁ ESTÁ CADASTRADO
- $query_verificar = "select * from clientes where cpf = '$nome' ";
-
- $result_verificar = mysqli_query($conexao, $query_verificar);
- $row_verificar = mysqli_num_rows($result_verificar);
-
- if($row_verificar <= 0){
- echo "<script language='javascript'> window.alert('Cliente não cadastrado!'); </script>";
- exit();
- }
- 
-
-
-$query = "INSERT into orcamento (`cliente`, `tecnico`, `produto`, `serie`, `problema`, `obs`,`valor_total`,`data_abertura`,`status`) VALUES ('$nome', '$tecnico', '$produto', '$serie', '$defeito','$obs',0,'$data', 'Aberto' )";
-
-$result = mysqli_query($conexao, $query);
-
-if($result == ''){
-  echo "<script language='javascript'> window.alert('Ocorreu um erro ao Cadastrar!'); </script>";
-}else{
-    echo "<script language='javascript'> window.alert('Salvo com Sucesso!'); </script>";
-    echo "<script language='javascript'> window.location='abrir_orcamentos.php'; </script>";
-}
-
-}
-?>
 
 
 <!--EXCLUIR -->
 <?php
 if(@$_GET['func'] == 'deleta'){
   $id = $_GET['id'];
-  $query = "DELETE FROM orcamento where id = '$id'";
-  mysqli_query($conexao, $query);
-  echo "<script language='javascript'> window.location='abrir_orcamentos.php'; </script>";
+  $query_editar = "UPDATE os set  `status` = 'Cancelado' where id = '$id' ";
+  mysqli_query($conexao, $query_editar);
+  echo "<script language='javascript'> window.location='os_orcamentos.php'; </script>";
 }
 ?>
 
@@ -316,11 +206,6 @@ if(@$_GET['func'] == 'deleta'){
 <?php
 if(@$_GET['func'] == 'edita'){  
 $id = $_GET['id'];
-$query = "select * from orcamento where id = '$id'";
-$result = mysqli_query($conexao, $query);
-
- while($res_1 = mysqli_fetch_array($result)){
-
 
 ?>
 
@@ -331,57 +216,23 @@ $result = mysqli_query($conexao, $query);
           <div class="modal-content">
             <div class="modal-header">
               
-              <h4 class="modal-title">Editar Orçamento</h4>
+              <h4 class="modal-title">Fechar OS</h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
               <form method="POST" action="">
-               
-              <div class="form-group">
-                <label for="fornecedor">Técnico</label>
-                  
-                  <select class="form-control mr-2" id="category" name="funcionario">
-                  <?php
-                  
-                  $query = "SELECT * FROM funcionarios where cargo ='Funcionário' ORDER BY nome asc";
-                  $result = mysqli_query($conexao, $query);
-
-                  if(count($result)){
-                    while($res_2 = mysqli_fetch_array($result)){
-                        ?>                                             
-                    <option value="<?php echo $res_2['id']; ?>"><?php echo $res_2['nome']; ?></option> 
-                        <?php      
-                      }
-                  }
-                  ?>
-                  </select>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Produto</label>
-                <input type="text" class="form-control mr-2" name="txtproduto" value="<?php echo $res_1['produto']; ?>" placeholder="Produto" required>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Num Série</label>
-                <input type="text" class="form-control mr-2" name="txtserie"  value="<?php echo $res_1['serie']; ?>" placeholder="serie" required>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Defeito</label>
-                <input type="text" class="form-control mr-2" name="txtdefeito" value="<?php echo $res_1['problema']; ?>"  placeholder="Defeito" required>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Observações</label>
-                <input type="text" class="form-control mr-2" name="txtobs" value="<?php echo $res_1['obs']; ?>" placeholder="Obeservação" required>
-              </div>
-               
              
-            </div>
-                   
-            <div class="modal-footer">
-               <button type="submit" class="btn btn-success mb-3" name="buttonEditar">Editar</button>
-
-
-                <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
-            </form>
+                  <div class="form-group">
+                    <label for="quantidade">Garantia de Serviço</label>
+                    <input type="text" class="form-control mr-2" name="txtgarantia" value="" placeholder="Garantia" required>
+                  </div>
+                  
+                  </div>
+                      
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success mb-3" name="buttonEditar">Editar</button>
+                  <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
+              </form>
             </div>
           </div>
         </div>
@@ -394,18 +245,10 @@ $result = mysqli_query($conexao, $query);
 <?php
 if(isset($_POST['buttonEditar'])){
   
-  $tecnico = $_POST['funcionario'];
-  $produto = $_POST['txtproduto'];
-  $serie   = $_POST['txtserie'];
-  $defeito = $_POST['txtdefeito'];
-  $obs     = $_POST['txtobs'];
+  $garantia = $_POST['txtgarantia'];
+  $data = date('Y-m-d');
 
-
- 
- 
-
-
-$query_editar = "UPDATE orcamento set `tecnico` = '$tecnico', `produto` = '$produto', `serie` = '$serie', `problema` = '$defeito', `obs` = '$obs' where id = '$id' ";
+$query_editar = "UPDATE os set `garantia` = '$garantia', `data_fechamento` = '$data', `status` = 'Fechado' where id = '$id' ";
 
 $result_editar = mysqli_query($conexao, $query_editar);
 
@@ -413,24 +256,15 @@ if($result_editar == ''){
   echo "<script language='javascript'> window.alert('Ocorreu um erro ao Editar!'); </script>";
 }else{
     echo "<script language='javascript'> window.alert('Editado com Sucesso!'); </script>";
-    echo "<script language='javascript'> window.location='abrir_orcamentos.php'; </script>";
+    echo "<script language='javascript'> window.location='os_abertas.php'; </script>";
 }
 
 }
 ?>
 
 
-<?php } }  ?>
+<?php }   ?>
 
-
-<!--MASCARAS -->
-
-<!-- <script type="text/javascript">
-    $(document).ready(function(){
-      $('#txttelefone').mask('(00) 00000-0000');
-      $('#txtcpf').mask('000.000.000-00');
-      });
-</script> -->
 
 
 

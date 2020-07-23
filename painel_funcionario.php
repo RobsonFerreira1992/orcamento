@@ -80,23 +80,12 @@ include('verificar_login.php');
             </a>
           </li>
           <li>
-            <a href="./tables.html">
+            <a href="consultar_os.php">
               <i class="nc-icon nc-tile-56"></i>
-              <p>Table List</p>
+              <p>Consultar OS</p>
             </a>
           </li>
-          <li>
-            <a href="./typography.html">
-              <i class="nc-icon nc-caps-small"></i>
-              <p>Typography</p>
-            </a>
-          </li>
-          <li class="active-pro">
-            <a href="./upgrade.html">
-              <i class="nc-icon nc-spaceship"></i>
-              <p>Upgrade to PRO</p>
-            </a>
-          </li>
+          
         </ul>
       </div>
     </div>

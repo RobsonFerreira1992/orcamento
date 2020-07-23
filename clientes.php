@@ -43,7 +43,7 @@ include('conexao.php');
       
     </ul>
     <form class="form-inline my-2 my-lg-0 mr-5">
-      <input name="txtpesquisarcpf" id="txtcpf" class="form-control mr-sm-2" type="search" placeholder="Buscar pelo CPF" aria-label="Pesquisar">
+      <input name="txtpesquisarcpf" id="txtcpf" class="form-control mr-sm-2 txtcpf" type="search" placeholder="Buscar pelo CPF" aria-label="Pesquisar">
       <button name="buttonPesquisarCPF" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
     </form>
 
@@ -87,17 +87,16 @@ include('conexao.php');
                     <div class="table-responsive">
                     <!-- Listar clientes -->
                     <?php
-                            if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar']!= ''){
-                              $nome = $_GET['txtpesquisar'].'%';
-                              $query = "SELECT * from clientes where nome LIKE '$nome' order by nome asc";
-
-                            }else if(isset($_GET['buttonPesquisarCPF']) and $_GET['txtpesquisar']!= ''){
+                             if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != ''){
+                              $nome = $_GET['txtpesquisar'] . '%';
+                               $query = "select * from clientes where nome LIKE '$nome'  order by nome asc"; 
+                            }else if(isset($_GET['buttonPesquisarCPF']) and $_GET['txtpesquisarcpf'] != ''){
                               $nome = $_GET['txtpesquisarcpf'];
-                              $query = "SELECT * from clientes where cpf = '$nome' order by nome asc";
-                              
-                            }else{
-                              $query = " SELECT * from clientes  order by nome asc";
-                            
+                               $query = "select * from clientes where cpf = '$nome'  order by nome asc"; 
+                            }
+    
+                            else{ 
+                             $query = "select * from clientes order by nome asc"; 
                             }
                             
                         
@@ -217,8 +216,9 @@ include('conexao.php');
               </div>
               <div class="form-group">
                 <label for="fornecedor">CPF</label>
-                 <input type="text" class="form-control mr-2" name="txtcpf" id="txtcpf" placeholder="CPF" required>
+                 <input type="text" class="form-control mr-2 txtcpf" name="txtcpf" id="txtcpf" placeholder="CPF" required>
               </div>
+              
             </div>
                    
             <div class="modal-footer">
@@ -250,7 +250,10 @@ if(isset($_POST['button'])){
   $endereco = $_POST['txtendereco'];
   $email = $_POST['txtemail'];
   $cpf = $_POST['txtcpf'];
-  $data = date('Y-m-d');
+  $data = date("Y-m-d");
+  
+
+
   
   $query_verificar = " SELECT * FROM `clientes` WHERE `cpf` = '$cpf'";
   
@@ -262,8 +265,8 @@ if(isset($_POST['button'])){
     exit();
 
   }
-
-  $query = "INSERT INTO `clientes` (`nome`,`telefone`,`endereco`,`email`,`cpf`,data) VALUES ('$nome','$telefone','$endereco','$email','$cpf','$data')";
+  
+  $query = "INSERT INTO `clientes` (`nome`,`telefone`,`endereco`,`email`,`cpf`,`data`) VALUES ('$nome','$telefone','$endereco','$email','$cpf','$data')";
 
   $result= mysqli_query($conexao,$query);
 
@@ -335,7 +338,7 @@ if(@$_GET['func'] == 'editar'){
               </div>
               <div class="form-group">
                 <label for="fornecedor">CPF</label>
-                 <input type="text" class="form-control mr-2" name="txtcpf" id="txtcpf" placeholder="CPF" value="<?= $res_1["cpf"]; ?>" required>
+                 <input type="text" class="form-control mr-2 txtcpf" name="txtcpf" id="txtcpf" placeholder="CPF" value="<?= $res_1["cpf"]; ?>" required>
               </div>
             </div>
                    
@@ -403,7 +406,7 @@ if(@$_GET['func'] == 'editar'){
 <script type="text/javascript">
     $(document).ready(function(){
       $('#txttelefone').mask('(00) 00000-0000');
-      $('#txtcpf').mask('000.000.000-00');
+      $('.txtcpf').mask('000.000.000-00');
     });
 </script>
 

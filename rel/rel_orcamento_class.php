@@ -7,7 +7,7 @@
  $id = $_GET['id'];
  $email = $_GET['email'];
 
- $html = utf8_encode(file_get_contents('http://localhost/orcamento/rel/rel_orcamento.php?id='.$id));
+ $html = utf8_encode(file_get_contents('http://localhost//cursos-projetos/orcamentos/rel/rel_orcamento.php?id='.$id));
  
  
  // inicializador a classe do dompdf
