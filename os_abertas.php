@@ -196,7 +196,7 @@ if(@$_GET['func'] == 'deleta'){
   $id = $_GET['id'];
   $query_editar = "UPDATE os set  `status` = 'Cancelado' where id = '$id' ";
   mysqli_query($conexao, $query_editar);
-  echo "<script language='javascript'> window.location='os_orcamentos.php'; </script>";
+  echo "<script language='javascript'> window.location='os_abertas.php'; </script>";
 }
 ?>
 

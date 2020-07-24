@@ -1,6 +1,7 @@
 <?php
 include('conexao.php');
-
+ error_reporting(E_ALL);
+ini_set("display_errors", 1);
 ?>
 
 <!DOCTYPE html>
@@ -85,21 +86,21 @@ include('conexao.php');
                               if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != '' and $_GET['status'] != 'Todos'){
                                 $data = $_GET['txtpesquisar'] . '%';
                                 $statusOrc = $_GET['status'];
-                                $data2 = date("Y-m-d");
+                                
 
-                                $query = "select * from os  where data_abertura = '$data' and status = '$statusOrc' order by id asc";
+                                $query = "select * from os where data_abertura = '$data' and status = '$statusOrc' order by id asc";
 
-                              }else if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] == '' and $_GET['status'] != 'Todos'){
+                              } elseif(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] == '' and $_GET['status'] != 'Todos'){
                                 $statusOrc = $_GET['status'];
-                                $query = "select * from os where data_abertura = '$data2' and status = '$statusOrc' order by id asc"; 
+                                $query = "select * from os where data_abertura = CURDATE() and status = '$statusOrc' order by id asc"; 
 
-                              }else if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar']!= '' and $_GET['status'] == 'Todos'){
+                              } elseif(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar']!= '' and $_GET['status'] == 'Todos'){
                                 $data = $_GET['txtpesquisar'] . '%';
                                 $query = "select * from os where data_abertura = '$data' order by id asc"; 
 
 
-                              }else{
-                                  $query = "select * from os where data_abertura = '$data2'  order by id asc"; 
+                              } else{
+                                  $query = "select * from os where data_abertura = CURDATE()  order by id asc"; 
                               }
 
                         
@@ -167,7 +168,7 @@ include('conexao.php');
 
                             while($res_cliente = mysqli_fetch_array($result_cliente)){
 
-                                    $nome_cliente = $res_cliente['nome'];
+                              $nome_cliente = $res_cliente['nome'];
 
                             
                             $query_tecnico = "select * from funcionarios where id = '$tecnico'";
@@ -176,7 +177,7 @@ include('conexao.php');
 
                             while($res_tecnico = mysqli_fetch_array($result_tecnico)){
         
-                                    $nome_tecnico = $res_tecnico['tecnico'];
+                              $nome_tecnico = $res_tecnico['nome'];
 
                             
                         
