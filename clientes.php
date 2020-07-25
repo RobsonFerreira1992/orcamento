@@ -158,7 +158,7 @@ include('conexao.php');
                             ?>
 
                             <tr>
-                                <td><?php echo $nome;?></td>
+                                <td><?php echo '<a class="link" href="servicos_clientes.php?cpf='.$cpf.'">'; echo $nome; '</a>'; ?></td>
                                 <td><?php echo $telefone;?></td>
                                 <td><?php echo $endereco;?></td>
                                 <td><?php echo $email;?></td>

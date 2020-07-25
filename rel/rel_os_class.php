@@ -5,9 +5,10 @@
  use Dompdf\Dompdf;
 
  $id = $_GET['id'];
+ $id_orc = $_GET['id_orc'];
  $email = $_GET['email'];
 
- $html = utf8_encode(file_get_contents('http://localhost/cursos-projetos/orcamentos/rel/rel_orcamento.php?id='.$id));
+ $html = utf8_encode(file_get_contents('http://localhost/cursos-projetos/orcamentos/rel/rel_os.php?id='.$id.'&id_orc='.$id_orc));
  
  
  // inicializador a classe do dompdf
@@ -28,13 +29,13 @@
  //nomear o pdf gerado
 
  $pdf->stream(
-     'relatorioOrcamento.pdf',
+     'relatorioOs.pdf',
      array('Attachment' => false)
  );
 
  $to = 'rob_chop@hotmail.com';
- $subject = 'Systec Orçamento';
- $message = file_get_contents("http://localhost/orcamento/rel/rel_orcamento.php");
+ $subject = 'Systec Ordem de serviço';
+ $message = file_get_contents("http://localhost/orcamento/rel/rel_os.php");
  $dest = $email;
  $headers = 'Content-type: text/html; charset=utf-8;';
  mail($to,$subject,$message,$headers);

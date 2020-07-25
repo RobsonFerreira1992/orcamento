@@ -156,8 +156,11 @@ ini_set("display_errors", 1);
                             $status = $res_1["status"];
                             $data_abertura = $res_1["data_abertura"];
                             $data_fechamento = $res_1["data_fechamento"];
+                            $id_orc = $res_1['id_orc'];
+                          
                             $data2 = implode('/', array_reverse(explode('-', $data_abertura)));
                             $data3 = implode('/', array_reverse(explode('-', $data_fechamento)));
+
 
 
                             $id = $res_1["id"];
@@ -171,34 +174,58 @@ ini_set("display_errors", 1);
                               $nome_cliente = $res_cliente['nome'];
 
                             
-                            $query_tecnico = "select * from funcionarios where id = '$tecnico'";
-                            
-                            $result_tecnico = mysqli_query($conexao, $query_tecnico);
+                              $query_tecnico = "select * from funcionarios where id = '$tecnico'";
+                              
+                              $result_tecnico = mysqli_query($conexao, $query_tecnico);
 
-                            while($res_tecnico = mysqli_fetch_array($result_tecnico)){
-        
-                              $nome_tecnico = $res_tecnico['nome'];
+                              while($res_tecnico = mysqli_fetch_array($result_tecnico)){
+          
+                                $nome_tecnico = $res_tecnico['nome'];
 
-                            
-                        
+                                $query_email = "select * from orcamento where id = '$id_orc'";
+
+                                $result_email = mysqli_query($conexao,$query_email);
+
+                                while($res_2 = mysqli_fetch_array($result_email)){
+
+                                  $cpf = $res_2['cliente'];
+
+
+                                  $query_cli = "select * from clientes where cpf = '$cpf'";
+
+                                  $result_cli = mysqli_query($conexao,$query_cli);
+
+                                  while($res_3 = mysqli_fetch_array($result_cli)){
+
+                                    $email = $res_3['email'];
+
+                                    
+                                  }
+
+                                }
+
                             ?>
 
-                            <tr>
+                                <tr>
 
-                             <td><?php echo $nome_cliente; ?></td>
-                             <td><?php echo $produto; ?></td>
-                             <td><?php echo $nome_tecnico; ?></td> 
-                             <td><?php echo $valor_total; ?></td>
-                             <td><?php echo $data2; ?></td> 
-                             <td><?php echo $data3; ?></td> 
-                             <td><?php echo $status; ?></td>  
-                             <td>
-                             <a class="btn btn-info" href="abrir_orcamentos.php?func=edita&id=<?php echo $id; ?>"><i class="fa fa-pencil-square-o"></i></a>
+                                <?php if($status == "Fechado"){?>
+                                  <td><?php echo '<a class="link" href="rel/rel_os_class.php?id='.$id.'&id_orc='.$id_orc.'&email='.$email.'" target="_blank">'; echo $nome_cliente; '</a>'; ?></td>
+                                <?php } else{ ?>
+                                    <td><?php echo $nome_cliente; ?></td>
+                                <?php } ?> 
+                                <td><?php echo $produto; ?></td>
+                                <td><?php echo $nome_tecnico; ?></td> 
+                                <td><?php echo $valor_total; ?></td>
+                                <td><?php echo $data2; ?></td> 
+                                <td><?php echo $data3; ?></td> 
+                                <td><?php echo $status; ?></td>  
+                                <td>
+                                <a class="btn btn-info" href="abrir_orcamentos.php?func=edita&id=<?php echo $id; ?>"><i class="fa fa-pencil-square-o"></i></a>
 
-                             <a class="btn btn-danger" href="abrir_orcamentos.php?func=deleta&id=<?php echo $id; ?>"><i class="fa fa-minus-square"></i></a>
+                                <a class="btn btn-danger" href="abrir_orcamentos.php?func=deleta&id=<?php echo $id; ?>"><i class="fa fa-minus-square"></i></a>
 
-                             </td>
-                            </tr>
+                                </td>
+                                </tr>
 
                             <?php 
                               }  }  }                    

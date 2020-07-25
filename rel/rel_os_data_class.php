@@ -4,10 +4,13 @@
  require_once '../dompdf/autoload.inc.php';
  use Dompdf\Dompdf;
 
- $id = $_GET['id'];
- $email = $_GET['email'];
+$dataInicial = $_POST['txtdataInicial'];
+$dataFinal = $_POST['txtdataFinal'];
+$status  =   $_POST['status'];
 
- $html = utf8_encode(file_get_contents('http://localhost/cursos-projetos/orcamentos/rel/rel_orcamento.php?id='.$id));
+
+
+ $html = utf8_encode(file_get_contents("http://localhost/cursos-projetos/orcamentos/rel/rel_os_data.php?dataInicial=".$dataInicial."&dataFinal=".$dataFinal."&status=".$status));
  
  
  // inicializador a classe do dompdf
@@ -28,16 +31,9 @@
  //nomear o pdf gerado
 
  $pdf->stream(
-     'relatorioOrcamento.pdf',
+     'relatorioOs.pdf',
      array('Attachment' => false)
  );
-
- $to = 'rob_chop@hotmail.com';
- $subject = 'Systec Orçamento';
- $message = file_get_contents("http://localhost/orcamento/rel/rel_orcamento.php");
- $dest = $email;
- $headers = 'Content-type: text/html; charset=utf-8;';
- mail($to,$subject,$message,$headers);
 ?>
 
 <?php 

@@ -65,15 +65,23 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
             </a>
           </li>
           <li>
-            <a href="./icons.html">
-              <i class="nc-icon nc-diamond"></i>
-              <p>Icons</p>
+          <li>
+            <a href="cargos.php">
+              <i class="nc-icon nc-tile-56"></i>
+              <p>Cargos</p>
             </a>
           </li>
           <li>
-            <a href="./map.html">
+            <a href="#" data-toggle="modal" data-target="#modalExemplo">
+              <i class="nc-icon nc-diamond"></i>
+              <p>Relatório de Orçamentos</p>
+            </a>
+          </li>
+          </li>
+          <li>
+            <a href="#" data-toggle="modal" data-target="#modalOs">
               <i class="nc-icon nc-pin-3"></i>
-              <p>Maps</p>
+              <p>Relatório de OS </p>
             </a>
           </li>
           <li>
@@ -83,12 +91,7 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
             </a>
           </li>
           
-          <li>
-            <a href="cargos.php">
-              <i class="nc-icon nc-tile-56"></i>
-              <p>Cargos</p>
-            </a>
-          </li>
+        
           <li>
             <a href="./typography.html">
               <i class="nc-icon nc-caps-small"></i>
@@ -281,7 +284,7 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
                 ©
                 <script>
                   document.write(new Date().getFullYear())
-                </script>, Treinamento PHP <i class="fa fa-heart heart"></i> Hugo Vasconcelos
+                </script>, Treinamento PHP <i class="fa fa-heart heart"></i>
               </span>
             </div>
           </div>
@@ -310,6 +313,112 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
       demo.initChartsPages();
     });
   </script>
+
+
+      <div id="modalExemplo" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+         <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <h4 class="modal-title">Relatório de Orçamentos</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+              <form method="POST" action="rel/rel_orcamentos_data_class.php">
+
+                <div class="row">
+                      <div class="col-md-4">
+                        <label>Status</label>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Data Inicial</label>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Data Final</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 mt-2">
+                    <select class="form-control" id="category" name="status">
+                      <option value="Todos">Todos</option> 
+                      <option value="Aberto">Aberto</option> 
+                      <option value="Aguardando">Aguardando</option> 
+                      <option value="Aprovado">Aprovado</option> 
+                      <option value="Cancelado">Cancelado</option>                      
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <input name="txtdataInicial" class="form-control mt-3" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                  <div class="col-md-4">
+                    <input name="txtdataFinal" class="form-control mt-3 " type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                </div>
+                </div>
+                      
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success mb-3" name="buttonPesquisar">Salvar </button>
+                  <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>    
+
+      <div id="modalOs" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+         <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <h4 class="modal-title">Relatório de Ordem de Serviço</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+              <form method="POST" action="rel/rel_os_data_class.php">
+
+                <div class="row">
+                      <div class="col-md-4">
+                        <label>Status</label>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Data Inicial</label>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Data Final</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 mt-2">
+                    <select class="form-control" id="category" name="status">
+                      <option value="Todos">Todos</option> 
+                      <option value="Aberto">Aberto</option> 
+                      <option value="Fechada">Fechada</option> 
+                      <option value="Cancelado">Cancelado</option>                      
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <input name="txtdataInicial" class="form-control mt-3" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                  <div class="col-md-4">
+                    <input name="txtdataFinal" class="form-control mt-3 " type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                </div>
+                </div>
+                      
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success mb-3" name="buttonPesquisar">Salvar </button>
+                  <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>  
 </body>
 
 </html>

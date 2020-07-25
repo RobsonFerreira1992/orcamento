@@ -205,65 +205,97 @@ if(@$_GET['func'] == 'deleta'){
 <!--EDITAR -->
 <?php
 if(@$_GET['func'] == 'edita'){  
-$id = $_GET['id'];
+  $id = $_GET['id'];
 
-?>
+  $query = "select * from os where id = '$id'";
 
-  <!-- Modal -->
-  <div id="modalEditar" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
-         <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
+  $result = mysqli_query($conexao,$query);
+
+  while($res_1 = mysqli_fetch_array($result)){
+
+    $id_orc = $res_1['id_orc'];
+
+    $query_email = "select * from orcamento where id = '$id_orc'";
+
+    $result_email = mysqli_query($conexao,$query_email);
+
+    while($res_2 = mysqli_fetch_array($result)){
+
+      $email = $res_2['cliente'];
+
+
+      $query_cli = "select * from clientes where cpf = '$cpf'";
+
+      $result_cli = mysqli_query($conexao,$query_cli);
+
+      while($res_3 = mysqli_fetch_array($result_cli)){
+
+        $email = $res_3['email'];
+
+        
+      }
+
+    }
+
+  }
+
+  ?>
+
+    <!-- Modal -->
+    <div id="modalEditar" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                
+                <h4 class="modal-title">Fechar OS</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <form method="POST" action="">
               
-              <h4 class="modal-title">Fechar OS</h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-              <form method="POST" action="">
-             
-                  <div class="form-group">
-                    <label for="quantidade">Garantia de Serviço</label>
-                    <input type="text" class="form-control mr-2" name="txtgarantia" value="" placeholder="Garantia" required>
-                  </div>
-                  
-                  </div>
-                      
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-success mb-3" name="buttonEditar">Editar</button>
-                  <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
-              </form>
+                    <div class="form-group">
+                      <label for="quantidade">Garantia de Serviço</label>
+                      <input type="text" class="form-control mr-2" name="txtgarantia" value="" placeholder="Garantia" required>
+                    </div>
+                    
+                    </div>
+                        
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success mb-3" name="buttonEditar">Editar</button>
+                    <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
-      </div>    
- 
-
- <script> $("#modalEditar").modal("show"); </script> 
-
-<!--Comando para editar os dados UPDATE -->
-<?php
-if(isset($_POST['buttonEditar'])){
+        </div>    
   
-  $garantia = $_POST['txtgarantia'];
-  $data = date('Y-m-d');
 
-$query_editar = "UPDATE os set `garantia` = '$garantia', `data_fechamento` = '$data', `status` = 'Fechado' where id = '$id' ";
+  <script> $("#modalEditar").modal("show"); </script> 
 
-$result_editar = mysqli_query($conexao, $query_editar);
+  <!--Comando para editar os dados UPDATE -->
+<?php
+  if(isset($_POST['buttonEditar'])){
+    
+    $garantia = $_POST['txtgarantia'];
+    $data = date('Y-m-d');
 
-if($result_editar == ''){
-  echo "<script language='javascript'> window.alert('Ocorreu um erro ao Editar!'); </script>";
-}else{
-    echo "<script language='javascript'> window.alert('Editado com Sucesso!'); </script>";
-    echo "<script language='javascript'> window.location='os_abertas.php'; </script>";
-}
+    $query_editar = "UPDATE os set `garantia` = '$garantia', `data_fechamento` = '$data', `status` = 'Fechado' where id = '$id' ";
 
-}
+    $result_editar = mysqli_query($conexao, $query_editar);
+
+    if($result_editar == ''){
+      echo "<script language='javascript'> window.alert('Ocorreu um erro ao Editar!'); </script>";
+    }else{
+      echo "<script language='javascript'> window.alert('Editado com Sucesso!'); </script>";
+      echo "<script language='javascript'> window.location='rel/rel_os_class.php?id=$id&id_orc=$id_orc&email=$email'; </script>";
+    }
+
+  }
 ?>
 
 
-<?php }   ?>
+<?php } ?>
 
 
 
