@@ -1,14 +1,14 @@
 <?php
 include('conexao.php');
+
 session_start();
 $tecnico = $_SESSION['nome_usuario'];
-
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ordem de Serviço</title>
+  <title>Ordem de Serviços</title>
 
 
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
@@ -46,8 +46,8 @@ $tecnico = $_SESSION['nome_usuario'];
       
     </ul>
     <form class="form-inline my-2 my-lg-0">
-     
 
+    
       <input name="txtpesquisar" class="form-control mr-sm-2" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
       <button name="buttonPesquisar" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
     </form>
@@ -78,25 +78,26 @@ $tecnico = $_SESSION['nome_usuario'];
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4 class="card-title"> Ordem de Serviços Abertos</h4>
+                    <h4 class="card-title"> Ordem de Serviços Abertas</h4>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
 
-                      <!--LISTAR TODOS OS CLIENTES -->
+                      <!--LISTAR TODOS OS ORÇAMENTOS -->
 
                       <?php
 
 
-                              if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != ''){
-                                $data = $_GET['txtpesquisar'] . '%';
-                               
-                               
-                                $query = "select ord.id, ord.cliente, ord.produto, ord.tecnico, ord.total, ord.data_abertura, ord.data_fechamento, ord.status, fun.nome from os as ord INNER JOIN funcionarios as fun ON ord.tecnico = fun.id where ord.data_abertura = '$data' and ord.status = 'Aberto' and fun.nome='$tecnico' order by id asc";
-                               
-                              }else{
-                                $query = "select ord.id, ord.cliente, ord.produto, ord.tecnico, ord.total, ord.data_abertura, ord.data_fechamento, ord.status, fun.nome from os as ord INNER JOIN funcionarios as fun ON ord.tecnico = fun.id where ord.data_abertura = 'CURDATE()' and ord.status = 'Aberto' and fun.nome='$tecnico' order by id asc";  
-                              }
+                        if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != ''){
+                          $data = $_GET['txtpesquisar'] . '%';
+                         
+
+                           $query = "select ord.id, ord.cliente, ord.produto, ord.tecnico, ord.total, ord.data_abertura, ord.data_fechamento, ord.status, fun.nome from os as ord INNER JOIN funcionarios as fun ON ord.tecnico = fun.id where ord.data_abertura = '$data' and ord.status = 'Aberto' and fun.nome = '$tecnico' order by id asc";
+
+                        
+                        }else{
+                         $query = "select ord.id, ord.cliente, ord.produto, ord.tecnico, ord.total, ord.data_abertura, ord.data_fechamento, ord.status, fun.nome from os as ord INNER JOIN funcionarios as fun ON ord.tecnico = fun.id where ord.data_abertura = curDate() and ord.status = 'Aberto' and fun.nome = '$tecnico' order by id asc"; 
+                        }
 
                         
 
@@ -120,6 +121,7 @@ $tecnico = $_SESSION['nome_usuario'];
                           <th>
                             Cliente
                           </th>
+                         
                           <th>
                             Produto
                           </th>
@@ -128,8 +130,9 @@ $tecnico = $_SESSION['nome_usuario'];
                           </th>
                             <th>
                             Data Abertura
+                          </th>
                            </th>
-                           </th>
+                           
                            </th>
                             <th>
                             Ações
@@ -144,18 +147,22 @@ $tecnico = $_SESSION['nome_usuario'];
                             $produto = $res_1["produto"];
                             $valor_total = $res_1["total"];
                             $data_abertura = $res_1["data_abertura"];
+                            
+                           
                             $id = $res_1["id"];
 
-                           
-
+                         
                             ?>
 
                             <tr>
 
-                             <td><?php echo $cliente; ?></td> 
-                             <td><?php echo $produto; ?></td>
+                             <td><?php echo $cliente; ?></td>
+                             <td><?php echo $produto; ?></td> 
+                            
                              <td><?php echo $valor_total; ?></td>
-                             <td><?php echo $data_abertura; ?></td>  
+                             <td><?php echo $data_abertura; ?></td>
+                             
+                           
                              <td>
                              <a class="btn btn-success" href="os_abertas.php?func=edita&id=<?php echo $id; ?>"><i class="fa fa-check-square"></i></a>
 
@@ -179,14 +186,19 @@ $tecnico = $_SESSION['nome_usuario'];
                 </div>
               </div>
 
-  </div>
+</div>
+
+
+
+
+
+
+
 </body>
 </html>
 
 
 
-
-<!--CADASTRAR -->
 
 
 
@@ -194,8 +206,17 @@ $tecnico = $_SESSION['nome_usuario'];
 <?php
 if(@$_GET['func'] == 'deleta'){
   $id = $_GET['id'];
-  $query_editar = "UPDATE os set  `status` = 'Cancelado' where id = '$id' ";
+  $query_editar = "UPDATE os set status = 'Cancelada' where id = '$id' ";
+
   mysqli_query($conexao, $query_editar);
+
+
+  //INSERINDO O PRODUTO NA TABELA DE PRODUTOS
+  $query_produto = "INSERT INTO produtos (produto) values ('$produto') ";
+
+  mysqli_query($conexao, $query_produto);
+
+
   echo "<script language='javascript'> window.location='os_abertas.php'; </script>";
 }
 ?>
@@ -205,97 +226,98 @@ if(@$_GET['func'] == 'deleta'){
 <!--EDITAR -->
 <?php
 if(@$_GET['func'] == 'edita'){  
-  $id = $_GET['id'];
+$id = $_GET['id'];
 
-  $query = "select * from os where id = '$id'";
+$query = "select * from os where id = '$id'";
+$result = mysqli_query($conexao, $query);
 
-  $result = mysqli_query($conexao,$query);
+ while($res_1 = mysqli_fetch_array($result)){
+$id_orc = $res_1['id_orc'];
 
-  while($res_1 = mysqli_fetch_array($result)){
+$query_email = "select * from orcamento where id = '$id_orc'";
+$result_email = mysqli_query($conexao, $query_email);
 
-    $id_orc = $res_1['id_orc'];
+ while($res_2 = mysqli_fetch_array($result_email)){
+$cpf = $res_2['cliente'];
 
-    $query_email = "select * from orcamento where id = '$id_orc'";
+$query_cli = "select * from clientes where cpf = '$cpf'";
+$result_cli = mysqli_query($conexao, $query_cli);
 
-    $result_email = mysqli_query($conexao,$query_email);
+ while($res_3 = mysqli_fetch_array($result_cli)){
+$email = $res_3['email'];
 
-    while($res_2 = mysqli_fetch_array($result)){
+}
 
-      $email = $res_2['cliente'];
+}
 
 
-      $query_cli = "select * from clientes where cpf = '$cpf'";
+ }
 
-      $result_cli = mysqli_query($conexao,$query_cli);
 
-      while($res_3 = mysqli_fetch_array($result_cli)){
+?>
 
-        $email = $res_3['email'];
-
-        
-      }
-
-    }
-
-  }
-
-  ?>
-
-    <!-- Modal -->
-    <div id="modalEditar" class="modal fade" role="dialog">
-          <div class="modal-dialog modal-lg">
-          <!-- Modal content-->
-            <div class="modal-content">
-              <div class="modal-header">
-                
-                <h4 class="modal-title">Fechar OS</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-              <div class="modal-body">
-                <form method="POST" action="">
+ <!-- Modal -->
+      <div id="modalEditar" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+         <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
               
-                    <div class="form-group">
-                      <label for="quantidade">Garantia de Serviço</label>
-                      <input type="text" class="form-control mr-2" name="txtgarantia" value="" placeholder="Garantia" required>
-                    </div>
-                    
-                    </div>
-                        
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-success mb-3" name="buttonEditar">Editar</button>
-                    <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
-                </form>
+              <h4 class="modal-title">Fechar OS</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="">
+             
+             
+              <div class="form-group">
+                <label for="quantidade">Garantia do Serviço</label>
+                <input type="text" class="form-control mr-2" name="txtgarantia" placeholder="Garantia" required>
               </div>
+              
+             
+             
+            </div>
+                   
+            <div class="modal-footer">
+               <button type="submit" class="btn btn-success mb-3" name="buttonEditar">Salvar </button>
+
+
+                <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
+            </form>
             </div>
           </div>
-        </div>    
-  
+        </div>
+      </div>    
 
-  <script> $("#modalEditar").modal("show"); </script> 
+ 
 
-  <!--Comando para editar os dados UPDATE -->
+ <script> $("#modalEditar").modal("show"); </script> 
+
+<!--Comando para editar os dados UPDATE -->
 <?php
-  if(isset($_POST['buttonEditar'])){
-    
-    $garantia = $_POST['txtgarantia'];
-    $data = date('Y-m-d');
+if(isset($_POST['buttonEditar'])){
+  
+  $garantia = $_POST['txtgarantia'];
 
-    $query_editar = "UPDATE os set `garantia` = '$garantia', `data_fechamento` = '$data', `status` = 'Fechado' where id = '$id' ";
 
-    $result_editar = mysqli_query($conexao, $query_editar);
+$query_editar = "UPDATE os set garantia = '$garantia', data_fechamento = curDate(), status = 'Fechada' where id = '$id' ";
 
-    if($result_editar == ''){
-      echo "<script language='javascript'> window.alert('Ocorreu um erro ao Editar!'); </script>";
-    }else{
-      echo "<script language='javascript'> window.alert('Editado com Sucesso!'); </script>";
-      echo "<script language='javascript'> window.location='rel/rel_os_class.php?id=$id&id_orc=$id_orc&email=$email'; </script>";
-    }
+$result_editar = mysqli_query($conexao, $query_editar);
 
-  }
+if($result_editar == ''){
+  echo "<script language='javascript'> window.alert('Ocorreu um erro ao Editar!'); </script>";
+}else{
+    echo "<script language='javascript'> window.alert('Editado com Sucesso!'); </script>";
+    echo "<script language='javascript'> window.location='rel/rel_os_class.php?id=$id&id_orc=$id_orc&email=$email'; </script>";
+}
+
+}
 ?>
 
 
-<?php } ?>
+<?php }   ?>
+
 
 
 

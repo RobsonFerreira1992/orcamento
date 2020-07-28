@@ -125,6 +125,12 @@ include('../conexao.php');
 		<br><br>
 
 		<?php
+		  $total_orc = 0;
+		  $quant = 0;
+		  $quant_aberto = 0;
+		  $quant_fechado = 0;
+		  $quant_cancelado = 0;
+					  
 
 		 if($status != 'Todos'){
                           
@@ -161,12 +167,7 @@ include('../conexao.php');
 			
 
                  <?php 
-                            $total_orc = 0;
-                            $quant = 0;
-                            $quant_aberto = 0;
-                            $quant_fechado = 0;
-                            $quant_cancelado = 0;
-                                        
+                          
 
                           while($res_1 = mysqli_fetch_array($result)){
                             $tecnico = $res_1["tecnico"];
