@@ -281,10 +281,8 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
             </nav>
             <div class="credits ml-auto">
               <span class="copyright">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>, Treinamento PHP <i class="fa fa-heart heart"></i>
+                
+               
               </span>
             </div>
           </div>

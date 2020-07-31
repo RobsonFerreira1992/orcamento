@@ -269,10 +269,7 @@ include('verificar_login.php');
             </nav>
             <div class="credits ml-auto">
               <span class="copyright">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>, Treinamento PHP <i class="fa fa-heart heart"></i> Hugo Vasconcelos
+                
               </span>
             </div>
           </div>
