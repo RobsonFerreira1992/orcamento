@@ -210,9 +210,11 @@ if(@$_GET['func'] == 'deleta'){
 
   mysqli_query($conexao, $query_editar);
 
+  $produtoNovo = $produto.'-'.$id
+;
 
   //INSERINDO O PRODUTO NA TABELA DE PRODUTOS
-  $query_produto = "INSERT INTO produtos (produto) values ('$produto') ";
+  $query_produto = "INSERT INTO produtos (produto) values ('$produtoNovo') ";
 
   mysqli_query($conexao, $query_produto);
 
