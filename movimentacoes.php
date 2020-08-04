@@ -7,7 +7,7 @@ ini_set("display_errors", 1);
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Consultar OS</title>
+  <title>Movimentaçoes</title>
 
 
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
@@ -35,7 +35,7 @@ ini_set("display_errors", 1);
 
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="painel_funcionario.php"><big><big><i class="fa fa-arrow-left"></i></big></big></a>
+  <a class="navbar-brand" href="painel_tesouraria.php"><big><big><i class="fa fa-arrow-left"></i></big></big></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -47,13 +47,15 @@ ini_set("display_errors", 1);
     <form class="form-inline my-2 my-lg-0">
       <select class="form-control mr-2" id="category" name="status">
         <option value="Todos">Todos</option>
-        <option value="Aberto">Aberto</option>
-        <option value="Fechado">Fechado</option>
-        <option value="Cancelado">Cancelado</option>
+        <option value="Aberto">Entradas</option>
+        <option value="Fechado">Saidas</option>
+       
 
       </select>
 
-      <input name="txtpesquisar" class="form-control mr-sm-2" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+      <input name="dataInicial" class="form-control mr-sm-2" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+      <input name="dataFinal" class="form-control mr-sm-2" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+
       <button name="buttonPesquisar" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
@@ -75,7 +77,7 @@ ini_set("display_errors", 1);
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4 class="card-title"> Ordem de Serviço</h4>
+                    <h4 class="card-title"> Movimentações</h4>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -87,17 +89,7 @@ ini_set("display_errors", 1);
                                 $data = $_GET['txtpesquisar'] . '%';
                                 $statusOrc = $_GET['status'];
                                 
-
                                 $query = "select * from os where data_abertura = '$data' and status = '$statusOrc' order by id asc";
-
-                              } elseif(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] == '' and $_GET['status'] != 'Todos'){
-                                $statusOrc = $_GET['status'];
-                                $query = "select * from os where data_abertura = CURDATE() and status = '$statusOrc' order by id asc"; 
-
-                              } elseif(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar']!= '' and $_GET['status'] == 'Todos'){
-                                $data = $_GET['txtpesquisar'] . '%';
-                                $query = "select * from os where data_abertura = '$data' order by id asc"; 
-
 
                               } else{
                                   $query = "select * from os where data_abertura = CURDATE()  order by id asc"; 

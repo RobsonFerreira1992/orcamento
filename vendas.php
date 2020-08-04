@@ -1,6 +1,8 @@
 <?php
 include('conexao.php');
 session_start();
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +66,7 @@ session_start();
 
          <div class="row">
            <div class="col-sm-12">
-            <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#modalExemplo">Inserir Vendas </button>
+            <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#modalExemplo">Inserir Venda </button>
 
            </div>
 
@@ -90,6 +92,7 @@ session_start();
                         if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != ''){
                           $data = $_GET['txtpesquisar'];
                            $query = "select * from vendas where data = '$data'  order by id asc"; 
+                           
                         }else{
                          $query = "select * from vendas where data = curDate()  order by id asc"; 
                         }
@@ -117,7 +120,7 @@ session_start();
                             Valor
                           </th>
                           <th>
-                           Produto
+                            Produto
                           </th>
                           <th>
                             Funcionário
@@ -125,8 +128,8 @@ session_start();
                            <th>
                             Data
                           </th>
-                          <th>
-                            status
+                            <th>
+                            Status
                           </th>
                            
                             <th>
@@ -140,10 +143,10 @@ session_start();
                           while($res_1 = mysqli_fetch_array($result)){
                             $valor = $res_1["valor"];
                             $produto = $res_1["produto"];
-                            $funcionario = $res_1["funcionario"];                          
+                            $funcionario = $res_1["funcionario"];
                             $data = $res_1["data"];
-                            $status = $res_1["status"];                          
-
+                            $status = $res_1["status"];
+                           
                             $id = $res_1["id"];
 
                             $data2 = implode('/', array_reverse(explode('-', $data)));
@@ -153,16 +156,15 @@ session_start();
                             <tr>
 
                              <td><?php echo $valor; ?></td>
+                             <td><?php echo $produto; ?></td> 
                              <td><?php echo $funcionario; ?></td>
-                             <td><?php echo $tesoureiro; ?></td> 
                              <td><?php echo $data2; ?></td>
-                             <td><?php echo $status; ?></td>
-
+                              <td><?php echo $status; ?></td>
                            
                              <td>
                             
 
-                             <a class="btn btn-danger" href="vendas.php?func=deleta&id=<?php echo $id; ?>"><i class="fa fa-minus-square"></i></a>
+                             <a class="btn btn-danger" href="vendas.php?func=deleta&id=<?php echo $id; ?>&produto=<?php echo $produto; ?>"><i class="fa fa-minus-square"></i></a>
 
                              </td>
                             </tr>
@@ -194,7 +196,7 @@ session_start();
           <div class="modal-content">
             <div class="modal-header">
               
-              <h4 class="modal-title">Gastos</h4>
+              <h4 class="modal-title">Vendas</h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -203,19 +205,19 @@ session_start();
                 <label for="id_produto">Valor</label>
                 <input type="text" class="form-control mr-2" name="txtvalor" placeholder="Valor" required>
               </div>
-              <div class="form-group">
+               <div class="form-group">
                 <label for="fornecedor">Produto</label>
-                 
-                 <select class="form-control mr-2" id="category" name="produto">
+                
+                  <select class="form-control mr-2" id="category" name="produto">
                   <?php
                   
                   $query = "SELECT * FROM produtos ORDER BY produto asc";
                   $result = mysqli_query($conexao, $query);
 
                   if(count($result)){
-                    while($res_2 = mysqli_fetch_array($result)){
+                    while($res_1 = mysqli_fetch_array($result)){
                          ?>                                             
-                    <option value="<?php echo $res_2['produto']; ?>"><?php echo $res_2['produto']; ?></option> 
+                    <option value="<?php echo $res_1['produto']; ?>"><?php echo $res_1['produto']; ?></option> 
                          <?php      
                        }
                    }
@@ -240,30 +242,27 @@ session_start();
       </div>  
 
 
-
-     <?php
-
-
-                        if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != ''){
+      <?php
+       if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != ''){
                           $data = $_GET['txtpesquisar'];
-                           $query = "select SUM(valor) as total from gastos where data = '$data'  order by id asc"; 
+                           $query = "select sum(valor) as total from vendas where data = '$data'  order by id asc"; 
                         }else{
-                         $query = "select SUM(valor) as total from gastos where data = curDate()  order by id asc"; 
+                         $query = "select sum(valor) as total from vendas where data = curDate()  order by id asc"; 
                         }
 
                         
 
                         $result = mysqli_query($conexao, $query);
                         //$dado = mysqli_fetch_array($result);
-                        $row = mysqli_num_rows($result);
+                        $row = mysqli_num_rows($result); 
 
                          while($res_1 = mysqli_fetch_array($result)){
-                          $total = $res_1['total'];
+                            $total = $res_1["total"];
 
-?>
+                        ?>
 
 
-      <div class="row mt-3">
+         <div class="row mt-3">
         <div class="col-md-12">
          <p align="right">Total: R$ 
           <?php
@@ -272,14 +271,16 @@ session_start();
           }else{
             echo $total;
           }
+
+        }
           
            ?>
             
           </p>
         </div>
-      </div>  
+      </div>   
 
-<?php } ?>
+
 
 
 </body>
@@ -294,12 +295,10 @@ session_start();
 if(isset($_POST['button'])){
   $valor = $_POST['txtvalor'];
   $produto = $_POST['produto'];
-
   $funcionario = $_SESSION['nome_usuario'];
-  
 
 
-$query = "INSERT into vendas (valor, produto, funcionario, data, status) VALUES ('$valor', '$produto', '$funcionario',  curDate(), 'Efetuado' )";
+$query = "INSERT into vendas (valor, produto, funcionario, data, status) VALUES ('$valor',  '$produto', '$funcionario', curDate(), 'Efetuada' )";
 
 $result = mysqli_query($conexao, $query);
 
@@ -315,7 +314,8 @@ while($res_id = mysqli_fetch_array($result_id)){
 $query_mov = "INSERT into movimentacoes (tipo, movimento, valor, funcionario, data, id_movimento) VALUES ('Entrada', 'Venda', '$valor', '$funcionario',  curDate(), '$id_ultimo' )";
 mysqli_query($conexao, $query_mov);
 
-$query_pro = "DELETE FROM produtos where produto = '$produto'";
+
+$query_pro = "DELETE FROM produtos where produto = '$produto' ";
 mysqli_query($conexao, $query_pro);
 
 
@@ -334,19 +334,24 @@ if($result == ''){
 <?php
 if(@$_GET['func'] == 'deleta'){
   $id = $_GET['id'];
-  $query = "UPDATE vendas set funcionario = $funcionario, status = 'Cancelado' where id = '$id'";
+  $produto = $_GET['produto'];
+  $funcionario = $_SESSION['nome_usuario'];
+  $query = "UPDATE vendas set funcionario = '$funcionario', status = 'Cancelada' where id = '$id'";
   mysqli_query($conexao, $query);
 
   $query = "DELETE FROM movimentacoes where movimento = 'Venda' and id_movimento = '$id'";
   mysqli_query($conexao, $query);
 
+
+  //DEVOLVER O PRODUTO PARA AS VENDAS - NA TABELA PRODUTOS
+  $query_produto = "INSERT INTO produtos (produto) values ('$produto') ";
+
+  mysqli_query($conexao, $query_produto);
+
+
   echo "<script language='javascript'> window.location='vendas.php'; </script>";
 }
 ?>
-
-
-
-
 
 
 
