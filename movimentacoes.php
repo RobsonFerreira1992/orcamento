@@ -1,13 +1,12 @@
 <?php
 include('conexao.php');
- error_reporting(E_ALL);
-ini_set("display_errors", 1);
+$status = 10;
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Movimentaçoes</title>
+  <title>Movimentações</title>
 
 
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
@@ -45,17 +44,17 @@ ini_set("display_errors", 1);
       
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <select class="form-control mr-2" id="category" name="status">
-        <option value="Todos">Todos</option>
-        <option value="Aberto">Entradas</option>
-        <option value="Fechado">Saidas</option>
-       
 
+      <select class="form-control mr-2" id="category" name="status">
+         <option value="Todos">Todas</option> 
+          <option value="Entrada">Entradas</option> 
+           <option value="Saída">Saídas</option> 
+           
+             
       </select>
 
       <input name="dataInicial" class="form-control mr-sm-2" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
-      <input name="dataFinal" class="form-control mr-sm-2" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
-
+       <input name="dataFinal" class="form-control mr-sm-2" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
       <button name="buttonPesquisar" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
@@ -67,10 +66,17 @@ ini_set("display_errors", 1);
 
 <div class="container">
 
-      <br>
-         <div class="row">
 
+    
+
+      <br>
+
+
+         <div class="row">
+           
+          
         </div>
+
 
           <div class="content">
             <div class="row">
@@ -82,18 +88,38 @@ ini_set("display_errors", 1);
                   <div class="card-body">
                     <div class="table-responsive">
 
-                      <!--LISTAR TODOS OS CLIENTES -->
+                      <!--LISTAR TODOS OS ORÇAMENTOS -->
 
                       <?php
-                              if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != '' and $_GET['status'] != 'Todos'){
-                                $data = $_GET['txtpesquisar'] . '%';
-                                $statusOrc = $_GET['status'];
-                                
-                                $query = "select * from os where data_abertura = '$data' and status = '$statusOrc' order by id asc";
 
-                              } else{
-                                  $query = "select * from os where data_abertura = CURDATE()  order by id asc"; 
-                              }
+
+                        if(isset($_GET['buttonPesquisar'])){
+
+                            $dataInicial = $_GET['dataInicial'];
+                            $dataFinal = $_GET['dataFinal'];
+                             $status = $_GET['status'];
+
+                            if ($dataInicial == ''){
+                              $dataInicial = Date('Y-m-d');
+                            }
+
+                            if ($dataFinal == ''){
+                              $dataFinal = Date('Y-m-d');
+                            }
+
+                            if($status != 'Todos'){
+                            
+                             $query = "select * from movimentacoes where (data >= '$dataInicial' and data <= '$dataFinal') and tipo = '$status' order by data asc";
+
+                            }else{
+                               $query = "select * from movimentacoes where data >= '$dataInicial' and data <= '$dataFinal' order by data asc";
+                            }
+                          
+                                                
+
+                        }else{
+                         $query = "select * from movimentacoes where data = curDate() order by id asc"; 
+                        }
 
                         
 
@@ -107,118 +133,97 @@ ini_set("display_errors", 1);
 
                         }else{
 
-                           ?>                         
+                           ?>
 
-                    <table class="table">
+                          
+
+                      <table class="table">
                         <thead class=" text-primary">
+                          
                           <th>
-                            Cliente
+                            Tipo
                           </th>
                           <th>
-                            Produto
+                            Movimento
                           </th>
                           <th>
-                            Técnico
+                            Valor
                           </th>
                            <th>
-                            Valor Total
+                            Funcionário
                           </th>
                             <th>
-                            Data abertura
-                          </th>
-                          <th>
-                            Data fechamento
-                          </th>
-                          <th>
-                            Status
+                            Data 
                           </th>
                           
+                           
                         </thead>
                         <tbody>
                          
                          <?php 
 
                           while($res_1 = mysqli_fetch_array($result)){
-                            $cliente = $res_1["cliente"];
-                            $tecnico = $res_1["tecnico"];
-                            $produto = $res_1["produto"];
-                            $valor_total = $res_1["total"];
-                            $status = $res_1["status"];
-                            $data_abertura = $res_1["data_abertura"];
-                            $data_fechamento = $res_1["data_fechamento"];
-                            $id_orc = $res_1['id_orc'];
-                          
-                            $data2 = implode('/', array_reverse(explode('-', $data_abertura)));
-                            $data3 = implode('/', array_reverse(explode('-', $data_fechamento)));
-
-
-
+                            $tipo = $res_1["tipo"];
+                            $movimento = $res_1["movimento"];
+                            $valor = $res_1["valor"];
+                            $funcionario = $res_1["funcionario"];
+                            $data = $res_1["data"];
+                           
                             $id = $res_1["id"];
 
-                            $query_cliente = "select * from clientes where cpf = '$cliente'";
-
-                            $result_cliente = mysqli_query($conexao, $query_cliente);
-
-                            while($res_cliente = mysqli_fetch_array($result_cliente)){
-
-                              $nome_cliente = $res_cliente['nome'];
-
-                            
-                              $query_tecnico = "select * from funcionarios where id = '$tecnico'";
-                              
-                              $result_tecnico = mysqli_query($conexao, $query_tecnico);
-
-                              while($res_tecnico = mysqli_fetch_array($result_tecnico)){
-          
-                                $nome_tecnico = $res_tecnico['nome'];
-
-                                $query_email = "select * from orcamento where id = '$id_orc'";
-
-                                $result_email = mysqli_query($conexao,$query_email);
-
-                                while($res_2 = mysqli_fetch_array($result_email)){
-
-                                  $cpf = $res_2['cliente'];
-
-
-                                  $query_cli = "select * from clientes where cpf = '$cpf'";
-
-                                  $result_cli = mysqli_query($conexao,$query_cli);
-
-                                  while($res_3 = mysqli_fetch_array($result_cli)){
-
-                                    $email = $res_3['email'];
-
-                                    
-                                  }
-
-                                }
+                             $data2 = implode('/', array_reverse(explode('-', $data)));
+                             
+                           
+                            $id = $res_1["id"];
 
                             ?>
 
-                                <tr>
+                            <tr>
 
-                                <?php if($status == "Fechado"){?>
-                                  <td><?php echo '<a class="link" href="rel/rel_os_class.php?id='.$id.'&id_orc='.$id_orc.'&email='.$email.'" target="_blank">'; echo $nome_cliente; '</a>'; ?></td>
-                                <?php } else{ ?>
-                                    <td><?php echo $nome_cliente; ?></td>
-                                <?php } ?> 
-                                <td><?php echo $produto; ?></td>
-                                <td><?php echo $nome_tecnico; ?></td> 
-                                <td><?php echo $valor_total; ?></td>
-                                <td><?php echo $data2; ?></td> 
-                                <td><?php echo $data3; ?></td> 
-                                <td><?php echo $status; ?></td>  
-                               
-                                </tr>
+                              <?php
+                              if($tipo == 'Entrada'){
+                              ?>
+                              <td><font color="green"><?php echo $tipo; ?></font></td>
+                              <?php 
+                              }else{
+                                ?>
+                              <td><font color="red"><?php echo $tipo; ?></font></td>
+
+                               <?php 
+                                }  ?>
+
+                           
+                             <td><?php echo $movimento; ?></td>
+
+                              <?php
+                              if($tipo == 'Entrada'){
+                              ?>
+                              <td><font color="green">R$ <?php echo $valor; ?></font></td>
+                              <?php 
+                              }else{
+                                ?>
+                              <td><font color="red">R$ <?php echo $valor; ?></font></td>
+
+                               <?php 
+                                }  ?>
+                              
+
+                             <td><?php echo $funcionario; ?></td> 
+                            
+                             <td><?php echo $data2; ?></td>
+                          
+                             
+                           
+                            
+                            </tr>
 
                             <?php 
-                              }  }  }                    
+                              }                       
                             ?>
                             
 
                         </tbody>
-                    </table>
+                      </table>
                           <?php 
                               }                        
                             ?>
@@ -227,138 +232,123 @@ ini_set("display_errors", 1);
                 </div>
               </div>
 
+
+
+
+
+
 </div>
 
 
+            <?php
+                        //TOTALIZAR OS VALORES DE ENTRADAS
+
+                        if(isset($_GET['buttonPesquisar'])){
+
+                            $dataInicial = $_GET['dataInicial'];
+                            $dataFinal = $_GET['dataFinal'];
+                             $status = $_GET['status'];
+
+                            if ($dataInicial == ''){
+                              $dataInicial = Date('Y-m-d');
+                            }
+
+                            if ($dataFinal == ''){
+                              $dataFinal = Date('Y-m-d');
+                            }
+
+                            
+                            
+                             $query_entradas = "select SUM(valor) as total from movimentacoes where (data >= '$dataInicial' and data <= '$dataFinal') and tipo = 'Entrada' order by data asc";
+
+                             $query_saidas = "select SUM(valor) as total from movimentacoes where (data >= '$dataInicial' and data <= '$dataFinal') and tipo = 'Saída' order by data asc";
+                            
+                          
+                                                
+
+                        }else{
+                         $query_entradas = "select SUM(valor) as total from movimentacoes where data = curDate() and tipo = 'Entrada' order by id asc";
+
+                         $query_saidas = "select SUM(valor) as total from movimentacoes where data = curDate() and tipo = 'Saída' order by id asc"; 
+                        }
+
+                        
+
+                        $result_entradas = mysqli_query($conexao, $query_entradas);
+
+                       $result_saidas = mysqli_query($conexao, $query_saidas);
+
+                        
+                           while($res_1 = mysqli_fetch_array($result_entradas)){
+                            $total_entradas = $res_1["total"];
 
 
- <!-- Modal -->
-      <div id="modalExemplo" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
-         <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
+                             while($res_2 = mysqli_fetch_array($result_saidas)){
+                            $total_saidas = $res_2["total"];
+
+                        
+
+                           ?>
+
+
+             <div class="row mt-3">
               
-              <h4 class="modal-title">Novo Orçamento</h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-              <form method="POST" action="">
-               <div class="form-group">
-                <label for="fornecedor">CPF</label>
-                 <input type="text" class="form-control mr-2" name="txtcpf" id="txtcpf" placeholder="CPF" required>
-              </div>
-              <div class="form-group">
-                <label for="fornecedor">Técnico</label>
-                  
-                  <select class="form-control mr-2" id="category" name="funcionario">
-                  <?php
-                  
-                  $query = "SELECT * FROM funcionarios where cargo ='Funcionário' ORDER BY nome asc";
-                  $result = mysqli_query($conexao, $query);
+                <div class="col-md-6">
+                  <font size="3">Total Entradas : <font color="green"> R$ 
+                    <?php
+                    if($total_entradas == '' || $status == 'Saída'){
+                      echo 0; 
+                    }else{
+                    echo $total_entradas;
+                    }  
+                    ?></font> 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Total Saídas : <font color="red"> R$  
+                   <?php
+                    if($total_saidas == '' || $status == 'Entrada'){
+                      echo 0; 
+                    }else{
+                    echo $total_saidas;
+                    }  
+                    ?> 
+                   </font>
+                 </font>
+                 
+                
+                </div>
 
-                  if(count($result)){
-                    while($res_1 = mysqli_fetch_array($result)){
-                        ?>                                             
-                    <option value="<?php echo $res_1['id']; ?>"><?php echo $res_1['nome']; ?></option> 
-                        <?php      
-                      }
-                  }
-                  ?>
-                  </select>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Produto</label>
-                <input type="text" class="form-control mr-2" name="txtproduto" placeholder="Produto" required>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Num Série</label>
-                <input type="text" class="form-control mr-2" name="txtserie" placeholder="serie" required>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Defeito</label>
-                <input type="text" class="form-control mr-2" name="txtdefeito" placeholder="Defeito" required>
-              </div>
-              <div class="form-group">
-                <label for="quantidade">Observações</label>
-                <input type="text" class="form-control mr-2" name="txtobs" placeholder="Obeservação" required>
-              </div>
-               
+                 <div class="col-md-6">
+                 
+                  <p align="right">  <font size="3">Saldo Total :
+                    <?php
+
+                    if($status == 'Entrada'){
+                      $total_saidas = 0;
+                    }
+
+
+                    if($status == 'Saída'){
+                      $total_entradas = 0;
+                    }
+
+                    $total = $total_entradas - $total_saidas;  
+                    if ($total >= 0){
+                     echo '<font color="green"> R$ '  .$total. ',00 </font>';
+                    } else{
+                     echo '<font color="red">  R$ '  .$total. ',00 </font>';
+                    }
+                    ?>
+                  </font> </p>
+                
+                </div>
              
-            </div>
-                   
-            <div class="modal-footer">
-               <button type="submit" class="btn btn-success mb-3" name="button">Salvar </button>
+              </div>
 
 
-                <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
-            </form>
-            </div>
-          </div>
-        </div>
-      </div>    
-
-
+              <?php } } ?>
 
 
 </body>
 </html>
 
 
-
-
-<!--CADASTRAR -->
-
-<?php
-if(isset($_POST['button'])){
-  $nome = $_POST['txtcpf'];
-  $tecnico= $_POST['funcionario'];
-  $produto= $_POST['txtproduto'];
-  $serie = $_POST['txtserie'];
-  $defeito = $_POST['txtdefeito'];
-  $obs = $_POST['txtobs'];
-  $data = date('Y-m-d');
-
-
- //VERIFICAR SE O CPF JÁ ESTÁ CADASTRADO
- $query_verificar = "select * from clientes where cpf = '$nome' ";
-
- $result_verificar = mysqli_query($conexao, $query_verificar);
- $row_verificar = mysqli_num_rows($result_verificar);
-
- if($row_verificar <= 0){
- echo "<script language='javascript'> window.alert('Cliente não cadastrado!'); </script>";
- exit();
- }
- 
-
-
-$query = "INSERT into orcamento (`cliente`, `tecnico`, `produto`, `serie`, `problema`, `obs`,`valor_total`,`data_abertura`,`status`) VALUES ('$nome', '$tecnico', '$produto', '$serie', '$defeito','$obs',0,'$data', 'Aberto' )";
-
-$result = mysqli_query($conexao, $query);
-
-if($result == ''){
-  echo "<script language='javascript'> window.alert('Ocorreu um erro ao Cadastrar!'); </script>";
-}else{
-    echo "<script language='javascript'> window.alert('Salvo com Sucesso!'); </script>";
-    echo "<script language='javascript'> window.location='abrir_orcamentos.php'; </script>";
-}
-
-}
-?>
-
-
-
-
-<!--MASCARAS -->
-
-<!-- <script type="text/javascript">
-    $(document).ready(function(){
-      $('#txttelefone').mask('(00) 00000-0000');
-      $('#txtcpf').mask('000.000.000-00');
-      });
-</script> -->
-
-
-
-   
