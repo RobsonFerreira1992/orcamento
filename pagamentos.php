@@ -240,9 +240,9 @@ session_start();
 
                         if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != ''){
                           $data = $_GET['txtpesquisar'];
-                           $query = "select SUM(valor) as total from gastos where data = '$data'  order by id asc"; 
+                           $query = "select SUM(valor) as total from pagamentos where data = '$data'  order by id asc"; 
                         }else{
-                         $query = "select SUM(valor) as total from gastos where data = curDate()  order by id asc"; 
+                         $query = "select SUM(valor) as total from pagamentos where data = curDate()  order by id asc"; 
                         }
 
                         
