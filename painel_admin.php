@@ -85,17 +85,17 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
             </a>
           </li>
           <li>
-            <a href="./notifications.html">
+            <a href="#" data-toggle="modal" data-target="#modalRelMov">
               <i class="nc-icon nc-bell-55"></i>
-              <p>Notifications</p>
+              <p>Relatório de movimentações</p>
             </a>
           </li>
           
         
           <li>
-            <a href="./typography.html">
+            <a href="#" data-toggle="modal" data-target="#modalRelGastos">
               <i class="nc-icon nc-caps-small"></i>
-              <p>Typography</p>
+              <p>relatório de gastos</p>
             </a>
           </li>
           <li class="active-pro">
@@ -417,6 +417,99 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
           </div>
         </div>
       </div>  
+<!-- modal Gastos -->
+      <div id="modalRelGastos" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+         <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <h4 class="modal-title">Relatório de Gastos</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+              <form method="POST" action="rel/rel_gastos_data_class.php">
+
+                <div class="row">
+                     
+                    <div class="col-md-6">
+                      <label>Data Inicial</label>
+                    </div>
+                    <div class="col-md-6">
+                      <label>Data Final</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <input name="txtdataInicial" class="form-control mt-3" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                  <div class="col-md-6">
+                    <input name="txtdataFinal" class="form-control mt-3 " type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                </div>
+                </div>
+                      
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success mb-3" name="buttonPesquisar">Salvar </button>
+                  <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- modal movimentações -->
+      <div id="modalRelMov" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+         <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <h4 class="modal-title">Relatório de Movimentações</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+              <form method="POST" action="rel/rel_mov_data_class.php">
+
+                <div class="row">
+                      <div class="col-md-4">
+                        <label>Tipo</label>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Data Inicial</label>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Data Final</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 mt-2">
+                    <select class="form-control" id="category" name="tipo">
+                      <option value="Todos">Todos</option> 
+                      <option value="Entrada">Entradas</option> 
+                      <option value="Saida">Saidas</option>                     
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <input name="txtdataInicial" class="form-control mt-3" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                  <div class="col-md-4">
+                    <input name="txtdataFinal" class="form-control mt-3 " type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                </div>
+                </div>
+                      
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success mb-3" name="buttonPesquisar">Salvar </button>
+                  <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>    
 </body>
 
 </html>

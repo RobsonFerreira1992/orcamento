@@ -10,7 +10,7 @@ $status  =   $_POST['status'];
 
 
 
- $html = utf8_encode(file_get_contents("http://localhost/orcamento/rel/rel_orcamentos_data.php?dataInicial=".$dataInicial."&dataFinal=".$dataFinal."&status=".$status));
+ $html = utf8_encode(file_get_contents("http://localhost/cursos-projetos/orcamentos/rel/rel_orcamentos_data.php?dataInicial=".$dataInicial."&dataFinal=".$dataFinal."&status=".$status));
  
  
  // inicializador a classe do dompdf
