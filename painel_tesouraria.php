@@ -3,12 +3,12 @@
 session_start();
 include('verificar_login.php');
 
-if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] != 'Gerente' && $_SESSION['cargo_usuario'] != 'Tesoureiro'){
-	header('Location:index.php');
-	exit();
-}
+include('conexao.php');
 
- ?>
+?>
+
+
+
 
 
 <!DOCTYPE html>
@@ -54,7 +54,7 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class=" ">
+          <li class="">
             <a href="movimentacoes.php">
               <i class="nc-icon nc-circle-10"></i>
               <p>Movimentações</p>
@@ -78,13 +78,14 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
               <p>Pagamentos</p>
             </a>
           </li>
-          <li>
+           <li>
             <a href="compras.php">
               <i class="nc-icon nc-bell-55"></i>
               <p>Compras</p>
             </a>
           </li>
           
+         
         </ul>
       </div>
     </div>
@@ -109,16 +110,27 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
              
               <li class="nav-item btn-rotate dropdown">
                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <?php echo $_SESSION['nome_usuario']; ?>
+                	<?php echo $_SESSION['nome_usuario']; ?>
                   <i class="nc-icon nc-bell-55"></i>
                   <p>
+
                     <span class="d-lg-none d-md-block">Some Actions</span>
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="logout.php">Sair</a>
 
-                 
+                <?php 
+                if($_SESSION['cargo_usuario'] == 'Administrador' || $_SESSION['cargo_usuario'] == 'Gerente'){
+                  
+
+                 ?>
+
+                  <a class="dropdown-item" href="painel_admin.php">Painél do Administrador</a>
+                 <a class="dropdown-item" href="painel_tesouraria.php">Painél da Tesouraria</a>
+
+                 <?php } ?>
+
                 </div>
               </li>
              
@@ -141,13 +153,30 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
                 <div class="row">
                   <div class="col-5 col-md-4">
                     <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-globe text-warning"></i>
+                      <i class="nc-icon nc-email-85 text-warning"></i>
                     </div>
                   </div>
                   <div class="col-7 col-md-8">
                     <div class="numbers">
-                      <p class="card-category">Capacity</p>
-                      <p class="card-title">150GB
+                      <p class="card-category">Serviços</p>
+                      <?php
+
+                          //TOTALIZAR OS SERVIÇOS
+
+                          $query_servicos = "select sum(valor) as total from movimentacoes where data = curDate() and movimento = 'Serviço' order by id asc"; 
+                          $result_servicos = mysqli_query($conexao, $query_servicos);
+                          
+                           while($res_serv = mysqli_fetch_array($result_servicos)){
+                            ?>
+                              <p class="card-title"><small>R$ <?php echo $res_serv['total']; 
+                              
+                              ?></small>
+
+                               <?php
+                            }
+
+                          ?>
+                      
                         <p>
                     </div>
                   </div>
@@ -156,7 +185,13 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
               <div class="card-footer ">
                 <hr>
                 <div class="stats">
-                  <i class="fa fa-refresh"></i> Update Now
+                  <?php 
+                  $query_servicos = "select * from movimentacoes where data = curDate() and movimento = 'Serviço' order by id asc"; 
+                          $result_servicos = mysqli_query($conexao, $query_servicos);
+                  $numero_servicos = mysqli_num_rows($result_servicos);
+                  
+                  ?>
+                  <i class="fa fa-refresh"></i> Total de Serviços: <?php echo $numero_servicos; ?></a>
                 </div>
               </div>
             </div>
@@ -172,8 +207,27 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
                   </div>
                   <div class="col-7 col-md-8">
                     <div class="numbers">
-                      <p class="card-category">Revenue</p>
-                      <p class="card-title">$ 1,345
+                      <p class="card-category">Vendas</p>
+
+                      <?php
+
+                          //TOTALIZAR DAS VENDAS
+
+                          $query_vendas = "select sum(valor) as total from vendas where data = curDate() and status = 'Efetuada' order by id asc"; 
+                          $result_vendas = mysqli_query($conexao, $query_vendas);
+                          
+                           while($res_vendas = mysqli_fetch_array($result_vendas)){
+                            ?>
+                              <p class="card-title"><small>R$ <?php echo $res_vendas['total']; 
+                              
+                              ?></small>
+
+                               <?php
+                            }
+
+                          ?>
+
+                     
                         <p>
                     </div>
                   </div>
@@ -182,7 +236,14 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
               <div class="card-footer ">
                 <hr>
                 <div class="stats">
-                  <i class="fa fa-calendar-o"></i> Last day
+                   <?php 
+                  $query_vendas = "select * from vendas where data = curDate() and status = 'Efetuada' order by id asc"; 
+                          $result_vendas = mysqli_query($conexao, $query_vendas);
+                  $numero_vendas = mysqli_num_rows($result_vendas);
+                  
+                  ?>
+                  <i class="fa fa-refresh"></i> Total de Vendas: <?php echo $numero_vendas; ?></a>
+                 
                 </div>
               </div>
             </div>
@@ -193,13 +254,29 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
                 <div class="row">
                   <div class="col-5 col-md-4">
                     <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-vector text-danger"></i>
+                      <i class="nc-icon nc-money-coins text-danger"></i>
                     </div>
                   </div>
                   <div class="col-7 col-md-8">
                     <div class="numbers">
-                      <p class="card-category">Errors</p>
-                      <p class="card-title">23
+                      <p class="card-category">Gastos</p>
+                       <?php
+
+                          //TOTALIZAR OS GASTOS
+
+                          $query_gastos = "select sum(valor) as total from gastos where data = curDate() order by id asc"; 
+                          $result_gastos = mysqli_query($conexao, $query_gastos);
+                          
+                           while($res_gastos = mysqli_fetch_array($result_gastos)){
+                            ?>
+                              <p class="card-title"><small>R$ <?php echo $res_gastos['total']; 
+                              
+                              ?></small>
+
+                               <?php
+                            }
+
+                          ?>
                         <p>
                     </div>
                   </div>
@@ -208,7 +285,13 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
               <div class="card-footer ">
                 <hr>
                 <div class="stats">
-                  <i class="fa fa-clock-o"></i> In the last hour
+                   <?php 
+                  $query_gastos = "select * from gastos where data = curDate() order by id asc"; 
+                          $result_gastos = mysqli_query($conexao, $query_gastos);
+                  $numero_gastos = mysqli_num_rows($result_gastos);
+                  
+                  ?>
+                  <i class="fa fa-refresh"></i> Total de Gastos: <?php echo $numero_gastos; ?></a>
                 </div>
               </div>
             </div>
@@ -219,13 +302,46 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
                 <div class="row">
                   <div class="col-5 col-md-4">
                     <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-favourite-28 text-primary"></i>
+                      <i class="nc-icon nc-bank text-primary"></i>
                     </div>
                   </div>
                   <div class="col-7 col-md-8">
                     <div class="numbers">
-                      <p class="card-category">Followers</p>
-                      <p class="card-title">+45K
+                      <p class="card-category">Saldo Diário</p>
+                       <?php
+
+                          //TOTALIZAR OS GASTOS
+
+                          $query_entradas = "select sum(valor) as total_entradas from movimentacoes where data = curDate() and tipo = 'Entrada' order by id asc"; 
+                          $result_entradas = mysqli_query($conexao, $query_entradas);
+                          
+                           while($res_entradas = mysqli_fetch_array($result_entradas)){
+
+
+                            //totalizar as saidas
+                            $query_saidas = "select sum(valor) as total_saidas from movimentacoes where data = curDate() and tipo = 'Saída' order by id asc"; 
+                            $result_saidas = mysqli_query($conexao, $query_saidas);
+                          
+                           while($res_saidas = mysqli_fetch_array($result_saidas)){
+
+                            ?>
+                              <p class="card-title"><small>
+
+                                <?php
+                               $total = $res_entradas['total_entradas'] - $res_saidas['total_saidas'];  
+                              if ($total >= 0){
+                               echo '<font color="green"> R$ '  .$total. ',00 </font>';
+                              } else{
+                               echo '<font color="red">  R$ '  .$total. ',00 </font>';
+                              } 
+
+                              
+                              ?></small>
+
+                               <?php
+                            } }
+
+                          ?>
                         <p>
                     </div>
                   </div>
@@ -234,13 +350,88 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
               <div class="card-footer ">
                 <hr>
                 <div class="stats">
-                  <i class="fa fa-refresh"></i> Update now
+                   <?php 
+                  $query_mov = "select * from movimentacoes where data = curDate() order by id asc"; 
+                          $result_mov = mysqli_query($conexao, $query_mov);
+                  $numero_mov = mysqli_num_rows($result_mov);
+                  
+                  ?>
+                  <i class="fa fa-refresh"></i> Total Movimentações: <?php echo $numero_mov; ?></a>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+
+<p class="mt-5">ÚLTIMAS MOVIMENTAÇÕES</p>
+        <hr >
+
+        <div class="row">
+
+          <?php 
+
+           $query = "select * from movimentacoes where data >= curDate()  order by id desc limit 4";
+
+            $result = mysqli_query($conexao, $query);
+                        //$dado = mysqli_fetch_array($result);
+                        $row = mysqli_num_rows($result);
+
+                         if($row == ''){
+
+                            echo "<h5> Não existem movimentações Hoje!! </h5>";
+
+                        }else{
+
+                            while($res_1 = mysqli_fetch_array($result)){
+                            $tipo = $res_1["tipo"];
+                            $movimento = $res_1["movimento"];
+                            $valor = $res_1["valor"];
+                            $funcionario = $res_1["funcionario"];
+
+           ?>
+
+           <?php 
+
+           if($tipo == 'Entrada'){
+
+            ?>
+             <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                <div class="card-header" style="font-size: 16px"><?php echo $movimento ?></div>
+                <div class="card-body">
+                  <h5 class="card-title">R$ <?php echo $valor ?></h5>
+                  <p class="card-text"><?php echo $funcionario ?></p>
+                </div>
+              </div>
+          </div>
+            <?php
+           }else{
+
+             ?>
+              <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                <div class="card-header" style="font-size: 16px"><?php echo $movimento ?></div>
+                <div class="card-body">
+                  <h5 class="card-title">R$ <?php echo $valor ?></h5>
+                  <p class="card-text"><?php echo $funcionario ?></p>
+                </div>
+              </div>
+          </div>
+            <?php
+
+           } }
+
+            ?>
+
+         
+
+        <?php } ?>
+
         
+
+
+        </div>
 
 
       <footer class="footer footer-black  footer-white ">
@@ -261,7 +452,10 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
             </nav>
             <div class="credits ml-auto">
               <span class="copyright">
-                
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>, Treinamento PHP <i class="fa fa-heart heart"></i> Hugo Vasconcelos
               </span>
             </div>
           </div>
@@ -293,3 +487,8 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
 </body>
 
 </html>
+
+
+
+
+

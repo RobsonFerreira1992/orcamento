@@ -252,9 +252,6 @@ include('../conexao.php');
 				 <p style="font-size:12px">
 				 	 <b>Valor das Entradas:</b> <font color="green"> R$ <?php echo $total_entradas; ?>,00 </font> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				 	  <b>Valor das Saídas:</b><font color="red"> R$ <?php echo $total_saidas; ?>,00 </font> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				 	  
-				 	   
-				 	
 
 				  </p>
 				</div>
@@ -274,10 +271,6 @@ include('../conexao.php');
 				 	 }
 
 				 	 ?>
-				 	 
-				 	 
-				 	   
-				 	
 
 				  </p>
 				</div>
@@ -301,13 +294,7 @@ include('../conexao.php');
 			<?php
 		}
 
-			?>
-		
-
-			
-			
-
-	
+			?>	
 </div>
 
 
