@@ -8,7 +8,7 @@ define("BD","orcamento");
 
 $conexao = mysqli_connect(HOST,USUARIO,SENHA,BD) or die ("Não conectou!");
 
-
+$url = "http://localhost/cursos-projetos/orcamentos/";
 
 
 

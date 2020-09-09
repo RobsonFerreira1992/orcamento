@@ -1,5 +1,5 @@
 <?php
-
+include("../conexao.php");
 //carregar o dompdf
  require_once '../dompdf/autoload.inc.php';
  use Dompdf\Dompdf;
@@ -8,7 +8,7 @@
  $id_orc = $_GET['id_orc'];
  $email = $_GET['email'];
 
- $html = utf8_encode(file_get_contents('http://localhost/cursos-projetos/orcamentos/rel/rel_os.php?id='.$id.'&id_orc='.$id_orc));
+ $html = utf8_encode(file_get_contents($url.'rel/rel_os.php?id='.$id.'&id_orc='.$id_orc));
  
  
  // inicializador a classe do dompdf
@@ -35,7 +35,7 @@
 
  $to = 'rob_chop@hotmail.com';
  $subject = 'Systec Ordem de serviço';
- $message = file_get_contents("http://localhost/orcamento/rel/rel_os.php");
+ $message = file_get_contents($url."rel/rel_os.php");
  $dest = $email;
  $headers = 'Content-type: text/html; charset=utf-8;';
  mail($to,$subject,$message,$headers);

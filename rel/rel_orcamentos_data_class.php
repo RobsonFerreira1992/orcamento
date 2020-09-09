@@ -1,5 +1,5 @@
 <?php
-
+include("../conexao.php");
 //carregar o dompdf
  require_once '../dompdf/autoload.inc.php';
  use Dompdf\Dompdf;
@@ -10,7 +10,7 @@ $status  =   $_POST['status'];
 
 
 
- $html = utf8_encode(file_get_contents("http://localhost/cursos-projetos/orcamentos/rel/rel_orcamentos_data.php?dataInicial=".$dataInicial."&dataFinal=".$dataFinal."&status=".$status));
+ $html = utf8_encode(file_get_contents($url."rel/rel_orcamentos_data.php?dataInicial=".$dataInicial."&dataFinal=".$dataFinal."&status=".$status));
  
  
  // inicializador a classe do dompdf

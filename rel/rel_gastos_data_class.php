@@ -1,5 +1,5 @@
 <?php
-
+include("../conexao.php");
 date_default_timezone_set('America/Sao_Paulo');
 
 //CARREGAR DOMPDF
@@ -21,7 +21,7 @@ if ($dataFinal == ''){
 }
 
 //ALIMENTAR OS DADOS NO RELATÓRIO
-$html = utf8_encode(file_get_contents("http://localhost/cursos-projetos/orcamentos/rel/rel_gastos_data.php?dataInicial=".$dataInicial."&dataFinal=".$dataFinal."&tipo=".$tipo));
+$html = utf8_encode(file_get_contents($url."rel/rel_gastos_data.php?dataInicial=".$dataInicial."&dataFinal=".$dataFinal."&tipo=".$tipo));
 
 
 

@@ -219,26 +219,26 @@ session_start();
 
 
 
-       <?php
+      <?php
 
 
-                        if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != ''){
-                          $data = $_GET['txtpesquisar'];
-                           $query = "select SUM(valor) as total from gastos where data = '$data'  order by id asc"; 
-                        }else{
-                         $query = "select SUM(valor) as total from gastos where data = curDate()  order by id asc"; 
-                        }
+        if(isset($_GET['buttonPesquisar']) and $_GET['txtpesquisar'] != ''){
+          $data = $_GET['txtpesquisar'];
+            $query = "select SUM(valor) as total from gastos where data = '$data'  order by id asc"; 
+        }else{
+          $query = "select SUM(valor) as total from gastos where data = curDate()  order by id asc"; 
+        }
 
-                        
+        
 
-                        $result = mysqli_query($conexao, $query);
-                        //$dado = mysqli_fetch_array($result);
-                        $row = mysqli_num_rows($result);
+        $result = mysqli_query($conexao, $query);
+        //$dado = mysqli_fetch_array($result);
+        $row = mysqli_num_rows($result);
 
-                         while($res_1 = mysqli_fetch_array($result)){
-                          $total = $res_1['total'];
+          while($res_1 = mysqli_fetch_array($result)){
+          $total = $res_1['total'];
 
-?>
+      ?>
 
 
       <div class="row mt-3">
