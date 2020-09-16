@@ -1,7 +1,7 @@
 <?php   
 session_start();
 include('verificar_login.php');
-
+include('conexao.php');
 if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] != 'Gerente' ){
     header('Location:index.php');
     exit();
@@ -90,20 +90,34 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
               <p>Relatório de movimentações</p>
             </a>
           </li>
-          
-        
           <li>
             <a href="#" data-toggle="modal" data-target="#modalRelGastos">
               <i class="nc-icon nc-caps-small"></i>
               <p>relatório de gastos</p>
             </a>
           </li>
-          <li class="active-pro">
-            <a href="./upgrade.html">
-              <i class="nc-icon nc-spaceship"></i>
-              <p>Upgrade to PRO</p>
-            </a>
-          </li>
+            <?php if($_SESSION['cargo_usuario'] == 'Administrador'){ ?>
+            <?php
+                $query = "SELECT * FROM backup where data = curDate()";
+                $result = mysqli_query($conexao,$query);
+                $num = mysqli_num_rows($result);
+                if($num > 0){ ?>
+                  <li class="active-pro">
+                    <a href="#" data-toggle="modal" data-target="#modalDados">
+                      <i class="nc-icon nc-spaceship"></i>
+                      <p>Excluir Dados</p>
+                    </a>
+                  </li>
+                <?php }else{ ?> 
+              <li class="active-pro">
+                <a href="#" data-toggle="modal" data-target="#modalMensagem">
+                  <i class="nc-icon nc-spaceship"></i>
+                  <p>Excluir Dados</p>
+                </a>
+              </li>
+              <?php } ?>
+           <?php } ?>      
+         
         </ul>
       </div>
     </div>
@@ -138,6 +152,8 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
                   <a class="dropdown-item" href="logout.php">Sair</a>
                   <a class="dropdown-item" href="painel_funcionario.php">Painél do Funcionário</a>
                   <a class="dropdown-item" href="painel_tesouraria.php">Painél da Tesouraria</a>
+                  <a class="dropdown-item" href="backup.php">Backup</a>
+
                   
                 </div>
               </li>
@@ -509,7 +525,76 @@ if($_SESSION['cargo_usuario'] != 'Administrador' && $_SESSION['cargo_usuario'] !
             </div>
           </div>
         </div>
-      </div>    
+      </div>
+      <!-- modal dados -->
+       <div id="modalDados" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+         <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <h4 class="modal-title">Excluir Dados do Banco</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+              <form method="POST" action="rel/rel_gastos_data_class.php">
+
+                <div class="row">
+                     
+                    <div class="col-md-6">
+                      <label>Data Inicial</label>
+                    </div>
+                    <div class="col-md-6">
+                      <label>Data Final</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <input name="txtdataInicial" class="form-control mt-3" type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                  <div class="col-md-6">
+                    <input name="txtdataFinal" class="form-control mt-3 " type="date" placeholder="Pesquisar" aria-label="Pesquisar">
+                  </div>
+                </div>
+                </div>
+                      
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success mb-3" name="buttonPesquisar">Salvar </button>
+                  <button type="button" class="btn btn-danger mb-3" data-dismiss="modal">Cancelar </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>   
+<!-- modal mensagem -->
+      <div id="modalMensagem" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+         <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <h4 class="modal-title">Excluir Dados do Banco</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+              <form method="POST" action="rel/rel_gastos_data_class.php">
+
+                <div class="row">
+                     
+                   <h4>Faça antes o backup do Banco de dados </h4>
+                </div>
+
+                      
+                <div class="modal-footer">
+                 
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>   
 </body>
 
 </html>
